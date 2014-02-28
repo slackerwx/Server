@@ -13,7 +13,7 @@ public class ServerTCP implements Runnable {
 	public ServerTCP(int port) {
 		this.port = port;
 		init();
-	}
+	} 
 
 	private void init() {
 		try {
