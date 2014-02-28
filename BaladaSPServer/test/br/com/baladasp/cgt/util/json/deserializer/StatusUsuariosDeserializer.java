@@ -17,7 +17,7 @@ public class StatusUsuariosDeserializer implements JsonDeserializer<ArrayList<St
 	@Override
 	public ArrayList<StatusUsuario> deserialize(JsonElement json, Type type, JsonDeserializationContext context)
 			throws JsonParseException {
-
+ 
 		JsonObject jsonObject = json.getAsJsonObject();
 		JsonArray jsonArray = jsonObject.get("statusUsuarios").getAsJsonArray();
 

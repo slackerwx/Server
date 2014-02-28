@@ -29,7 +29,7 @@ public class TratarUsuarioTest extends TestCase {
 	private TratarUsuario tratarUsuario;
 	private Usuario usuario;
 	private Estabelecimento estabelecimento;
-
+ 
 	private EstabelecimentoBO estabelecimentoBO = new EstabelecimentoBO();
 	private UsuarioBO usuarioBO = new UsuarioBO();
 

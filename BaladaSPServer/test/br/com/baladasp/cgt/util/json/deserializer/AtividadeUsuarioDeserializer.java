@@ -19,7 +19,7 @@ public class AtividadeUsuarioDeserializer implements JsonDeserializer<AtividadeU
 	private AtividadeUsuario atividadeUsuario;
 	private Estabelecimento estabelecimento;
 
-	@Override
+	@Override 
 	public AtividadeUsuario deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
 
 		JsonObject jsonObject = jsonElement.getAsJsonObject();

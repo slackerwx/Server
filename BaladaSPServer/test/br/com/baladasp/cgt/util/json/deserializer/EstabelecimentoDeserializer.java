@@ -21,7 +21,7 @@ public class EstabelecimentoDeserializer implements JsonDeserializer<Estabelecim
 	public Estabelecimento deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
 
 		JsonObject json = jsonElement.getAsJsonObject();
-
+ 
 		long id = json.get("id").getAsLong();
 		String nome = json.get("nome").getAsString();
 		String descricaoEstabelecimento = json.get("descricaoEstabelecimento").getAsString();
