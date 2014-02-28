@@ -1,7 +1,6 @@
 package br.com.baladasp.cdp.estabelecimento;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,8 +14,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -50,21 +47,19 @@ public class Estabelecimento implements Serializable {
 	private boolean delivery;
 	private boolean estacionamento;
 	private boolean wifi;
+	private int qtdAvaliacoes;
 
 	@OneToOne
 	private Musica musica;
 	@OneToOne
 	private Categoria categoria;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Ranking ranking;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@PrimaryKeyJoinColumn(name = "cod_estab")
 	private Endereco endereco;
 
-	@OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@Fetch(FetchMode.SUBSELECT)
-	private List<Avaliacao> avaliacoes;
 
 	@OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Set<Promocao> promocoes;
@@ -76,7 +71,7 @@ public class Estabelecimento implements Serializable {
 	public Estabelecimento(long id, String nome, String descricaoEstabelecimento, String urlLogo, String site, String facebook,
 			String twitter, String youtube, String horarioFuncionamento, String telefone, boolean delivery,
 			boolean estacionamento, boolean wifi, String classificacaoEtaria, String evento, String publico, String decoracao,
-			String ambiente, Musica musica, Categoria categoria, Ranking ranking) {
+			String ambiente, Musica musica, Categoria categoria, Ranking ranking, Endereco endereco, int qtdAvaliacoes) {
 
 		this.id = id;
 		this.nome = nome;
@@ -99,6 +94,16 @@ public class Estabelecimento implements Serializable {
 		this.musica = musica;
 		this.categoria = categoria;
 		this.ranking = ranking;
+		this.endereco = endereco;
+		this.qtdAvaliacoes = qtdAvaliacoes;
+	}
+
+	public int getQtdAvaliacoes() {
+		return qtdAvaliacoes;
+	}
+
+	public void aumentarQtdAvaliacoes(){
+		this.qtdAvaliacoes++;
 	}
 
 	public String getHorarioFuncionamento() {
@@ -107,14 +112,6 @@ public class Estabelecimento implements Serializable {
 
 	public void setHorarioFuncionamento(String horarioFuncionamento) {
 		this.horarioFuncionamento = horarioFuncionamento;
-	}
-
-	public List<Avaliacao> getAvaliacao() {
-		return avaliacoes;
-	}
-
-	public void setAvaliacao(List<Avaliacao> avaliacao) {
-		this.avaliacoes = avaliacao;
 	}
 
 	public long getId() {
@@ -327,6 +324,17 @@ public class Estabelecimento implements Serializable {
 		} else if (!nome.equals(other.nome))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Estabelecimento [id=" + id + ", nome=" + nome + ", descricaoEstabelecimento=" + descricaoEstabelecimento
+				+ ", urlLogo=" + urlLogo + ", site=" + site + ", facebook=" + facebook + ", twitter=" + twitter + ", youtube="
+				+ youtube + ", horarioFuncionamento=" + horarioFuncionamento + ", telefone=" + telefone
+				+ ", classificacaoEtaria=" + classificacaoEtaria + ", evento=" + evento + ", publico=" + publico + ", decoracao="
+				+ decoracao + ", ambiente=" + ambiente + ", delivery=" + delivery + ", estacionamento=" + estacionamento
+				+ ", wifi=" + wifi + ", musica=" + musica + ", categoria=" + categoria + ", ranking=" + ranking + ", endereco="
+				+ endereco + ", qtdAvaliacoes=" + qtdAvaliacoes + ", promocoes=" + promocoes + "]";
 	}
 
 }

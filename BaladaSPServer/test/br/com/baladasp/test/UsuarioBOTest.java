@@ -23,10 +23,10 @@ public class UsuarioBOTest extends TestCase implements BOTest {
 		usuarioBO = new UsuarioBO();
 		usuario = new Usuario();
 
-		usuario.setIDTwitter(00000000);
-		usuario.setScreenName("UsuarioTest");
-		usuario.setUrlImagem("https://test.img");
-		usuario.setUsuario("Usuario Test");
+		//usuario.setIDTwitter(00000002);
+		//usuario.setScreenName("UsuarioTest");
+		//usuario.setUrlImagem("https://test.img");
+		//usuario.setUsuario("Usuario Test");
 	}
 
 	// TODO Criar Mock ?
@@ -37,7 +37,7 @@ public class UsuarioBOTest extends TestCase implements BOTest {
 
 	@Override
 	public void testUpdate() {
-		usuario.setScreenName("UsuarioTest2");
+		//usuario.setScreenName("UsuarioTest2");
 		usuarioBO.atualizarUsuario(usuario);
 	}
 

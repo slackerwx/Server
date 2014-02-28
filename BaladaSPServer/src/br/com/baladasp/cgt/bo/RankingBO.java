@@ -24,7 +24,7 @@ public class RankingBO extends AbstractCRUD {
 		if (rankAtualizado == null) {
 			save(ranking);
 		} else {
-			long total = ranking.getPontos() + rankAtualizado.getPontos();
+			float total = ranking.getPontos() + rankAtualizado.getPontos();
 			rankAtualizado.setPontos(total);
 			rankAtualizado.setMediaAvaliacoes(ranking.getMediaAvaliacoes());
 			atualizarRanking(rankAtualizado);

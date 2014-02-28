@@ -8,6 +8,7 @@ import java.net.SocketException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
+import br.com.baladasp.cgt.usuario.TratarUsuario;
 import br.com.baladasp.util.Console;
 
 import com.google.gson.Gson;

@@ -37,43 +37,28 @@ public class Usuario implements Serializable {
 
 	}
 
-	public Usuario(String usuario, long IDTwitter, String screenName) {
+	public Usuario(String usuario, long IDTwitter, String screenName, String urlImagem) {
 		super();
 		this.usuario = usuario;
 		this.IDTwitter = IDTwitter;
 		this.screenName = screenName;
+		this.urlImagem = urlImagem;
 	}
 
 	public long getIDTwitter() {
 		return IDTwitter;
 	}
 
-	public void setIDTwitter(long ID) {
-		IDTwitter = ID;
-	}
-
 	public String getScreenName() {
 		return screenName;
-	}
-
-	public void setScreenName(String screenName) {
-		this.screenName = screenName;
 	}
 
 	public String getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(String user) {
-		this.usuario = user;
-	}
-
 	public String getUrlImagem() {
 		return urlImagem;
-	}
-
-	public void setUrlImagem(String urlImagem) {
-		this.urlImagem = urlImagem;
 	}
 
 	public int getQtdCheckins() {

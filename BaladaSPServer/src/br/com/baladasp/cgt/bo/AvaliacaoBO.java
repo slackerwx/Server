@@ -2,10 +2,10 @@ package br.com.baladasp.cgt.bo;
 
 import java.util.ArrayList;
 
-import br.com.baladasp.cdp.estabelecimento.Avaliacao;
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgd.dao.AbstractSelectDAO;
+import br.com.baladasp.cgt.usuario.Avaliacao;
 
 @SuppressWarnings("rawtypes")
 public class AvaliacaoBO extends AbstractCRUD {

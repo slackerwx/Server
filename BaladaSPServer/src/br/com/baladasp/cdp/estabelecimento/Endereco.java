@@ -30,15 +30,14 @@ public class Endereco implements Serializable {
 	private String numero;
 	private String bairro;
 	private String cep;
+	
 	@OneToOne
 	private Regiao regiao;
-	@OneToOne
-	private Estabelecimento estabelecimento;
 
 	public Endereco() {
 
 	}
-	
+
 	public Endereco(long endereco, String rua, String numero, String bairro, String cep, Regiao regiao) {
 		super();
 		this.endereco = endereco;
@@ -64,14 +63,6 @@ public class Endereco implements Serializable {
 
 	public void setEndereco(Long endereco) {
 		this.endereco = endereco;
-	}
-
-	public Estabelecimento getEstabelecimento() {
-		return estabelecimento;
-	}
-
-	public void setEstabelecimento(Estabelecimento estabelecimento) {
-		this.estabelecimento = estabelecimento;
 	}
 
 	public String getCep() {
@@ -119,8 +110,6 @@ public class Endereco implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cep == null) ? 0 : cep.hashCode());
-		result = prime * result + ((estabelecimento == null) ? 0 : estabelecimento.hashCode());
-		result = prime * result + ((regiao == null) ? 0 : regiao.hashCode());
 		return result;
 	}
 
@@ -137,16 +126,6 @@ public class Endereco implements Serializable {
 			if (other.cep != null)
 				return false;
 		} else if (!cep.equals(other.cep))
-			return false;
-		if (estabelecimento == null) {
-			if (other.estabelecimento != null)
-				return false;
-		} else if (!estabelecimento.equals(other.estabelecimento))
-			return false;
-		if (regiao == null) {
-			if (other.regiao != null)
-				return false;
-		} else if (!regiao.equals(other.regiao))
 			return false;
 		return true;
 	}

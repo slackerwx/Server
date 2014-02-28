@@ -2,15 +2,13 @@ package br.com.baladasp.cgt.bo;
 
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import br.com.baladasp.cgd.dao.AbstractSelectDAO;
 import br.com.baladasp.cgd.dao.DAOException;
 
 public class AbstractCRUD<T> {
-
-	static Logger logger = Logger.getLogger(AbstractCRUD.class.getName());
+	private Logger logger = Logger.getLogger(AbstractCRUD.class.getName());
 
 	protected BaseBO<T> classeBO;
 	protected AbstractSelectDAO<T> classeDAO;
@@ -28,6 +26,7 @@ public class AbstractCRUD<T> {
 			} catch (BOException e1) {
 				e1.printStackTrace();
 			}
+
 			logger.error("Nao foi possivel adicionar: " + classe.getClass().getName());
 			e.printStackTrace();
 		}
@@ -76,7 +75,6 @@ public class AbstractCRUD<T> {
 			object = classeBO.selectById(id);
 			classeBO.commit();
 
-			logger.setLevel(Level.INFO);
 			logger.info(classeBO.getClass().getSimpleName() + " Encontrado");
 		} catch (BOException e) {
 			try {
@@ -97,7 +95,7 @@ public class AbstractCRUD<T> {
 			list = classeDAO.selectByParameter(namedQuery, object);
 			classeBO.commit();
 
-			logger.info(classeBO.getClass().getSimpleName() + " findByParameterReturnList");
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
 		} catch (BOException e) {
 			try {
 				classeBO.rollback();
@@ -120,7 +118,7 @@ public class AbstractCRUD<T> {
 			objt = classeDAO.selectByParameterUniqueResult(namedQuery, object);
 			classeBO.commit();
 
-			logger.info(classeBO.getClass().getSimpleName() + " findByParameterUniqueResult");
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
 		} catch (BOException e) {
 			try {
 				classeBO.rollback();
@@ -142,7 +140,7 @@ public class AbstractCRUD<T> {
 			list = classeDAO.selectAll(namedQuery);
 			classeBO.commit();
 
-			logger.info(classeBO.getClass().getSimpleName() + " findAll");
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
 		} catch (BOException e) {
 			try {
 				classeBO.rollback();
@@ -164,7 +162,7 @@ public class AbstractCRUD<T> {
 			list = classeDAO.selectByParameterWithMaxResults(namedQuery, object);
 			classeBO.commit();
 
-			logger.info(classeBO.getClass().getSimpleName() + " findByParameterWithMaxResults");
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
 		} catch (BOException e) {
 			try {
 				classeBO.rollback();

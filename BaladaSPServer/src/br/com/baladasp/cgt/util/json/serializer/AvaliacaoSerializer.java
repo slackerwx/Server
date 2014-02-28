@@ -1,8 +1,8 @@
-package br.com.baladasp.cgt.util;
+package br.com.baladasp.cgt.util.json.serializer;
 
 import java.lang.reflect.Type;
 
-import br.com.baladasp.cdp.estabelecimento.Avaliacao;
+import br.com.baladasp.cgt.usuario.Avaliacao;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -15,7 +15,6 @@ public class AvaliacaoSerializer implements JsonSerializer<Avaliacao> {
 	public JsonElement serialize(Avaliacao avaliacao, Type arg1, JsonSerializationContext context) {
 		JsonObject json = new JsonObject();
 
-		json.addProperty("avaliacao", avaliacao.getAvaliacao());
 		json.addProperty("preco", avaliacao.getPreco());
 		json.addProperty("atendimento", avaliacao.getAtendimento());
 		json.addProperty("cardapio", avaliacao.getCardapio());
@@ -24,11 +23,11 @@ public class AvaliacaoSerializer implements JsonSerializer<Avaliacao> {
 		json.addProperty("geral", avaliacao.getGeral());
 		json.addProperty("atracao", avaliacao.getAtracao());
 		json.addProperty("localizacao", avaliacao.getLocalizacao());
-		json.addProperty("total", avaliacao.getMedia());
+		json.addProperty("total", avaliacao.getMediaAvaliacao());
 		json.addProperty("comentario", avaliacao.getComentario());
-		json.addProperty("dataAvaliacao", avaliacao.getDataAvaliacao().toString());
+		json.addProperty("dataAvaliacao", avaliacao.getDataAtividade().toString());
 
-		json.add("usuario", context.serialize(avaliacao.getUsuario()));
+		//json.add("atividadeUsuario", context.serialize(avaliacao.getAtividadeUsuario()));
 
 		return json;
 	}

@@ -1,4 +1,4 @@
-package br.com.baladasp.cgt.util;
+package br.com.baladasp.cgt.util.json.serializer;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

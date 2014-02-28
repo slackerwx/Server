@@ -14,21 +14,21 @@ public class AbstractSelectDAO<T> extends BaseDAO<T> {
 	@SuppressWarnings("unchecked")
 	public List<T> selectByParameter(String namedQuery, Object object) throws DAOException {
 		Session session = getSession();
-		System.out.println("selectByParameter " + object.toString());
+
 		return session.getNamedQuery(namedQuery).setParameter("parametro", object).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public ArrayList<T> selectAll(String namedQuery) throws DAOException {
 		Session session = getSession();
-		System.out.println("selectAll " + namedQuery);
+
 		return (ArrayList<T>) session.getNamedQuery(namedQuery).list();
 	}
 
 	@SuppressWarnings("unchecked")
 	public T selectByParameterUniqueResult(String namedQuery, Object id) throws DAOException {
 		Session session = getSession();
-		System.out.println("selectByParameterUniqueResult " + id.toString());
+
 		return (T) session.getNamedQuery(namedQuery).setParameter("parametro", id).uniqueResult();
 	}
 
@@ -36,7 +36,7 @@ public class AbstractSelectDAO<T> extends BaseDAO<T> {
 	public ArrayList<T> selectByParameterWithMaxResults(String namedQuery, Object object) throws DAOException {
 		Session session = getSession();
 		int pageSize = 10;
-		System.out.println("selectByParameter " + object.toString());
+
 		return (ArrayList<T>) session.getNamedQuery(namedQuery).setParameter("parametro", object).setMaxResults(pageSize).list();
 	}
 

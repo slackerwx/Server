@@ -5,6 +5,7 @@
 
 <hibernate-configuration>
 	<session-factory>
+		
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.url">jdbc:mysql://localhost/appbaladaspbd</property>
@@ -13,33 +14,39 @@
 
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">5</property>
+
 		<!-- SQL dialect -->
-		<property name="dialect">org.hibernate.dialect.HSQLDialect</property>
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+
 		<!-- Enable Hibernate's automatic session context management -->
+		<!-- thread não eh a melhor abordagem para producao, apenas p/ exemplos -->
 		<property name="current_session_context_class">thread</property>
+
 		<!-- Disable the second-level cache -->
 		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
-		<!-- Echo all executed SQL to stdout -->
-		<!-- <property name="show_sql">true</property> -->
 
-		<!-- <property name="format_sql">true</property> -->
+		<!-- Echo all executed SQL to stdout -->
+		<!--  <property name="show_sql">true</property>-->
+		<!-- <property name="format_sql">true</property>-->
 
 		<!-- Drop and re-create the database schema on startup -->
 		<property name="hbm2ddl.auto">update</property>
 
-
+		<!-- Mapeamento das classes -->
 		<mapping class="br.com.baladasp.cdp.usuario.Usuario" />
-		<mapping class="br.com.baladasp.cdp.usuario.Checkin" />
-		<mapping class="br.com.baladasp.cdp.usuario.AtividadesUsuario" />
-		<mapping class="br.com.baladasp.cdp.usuario.StatusUsuarios" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Estabelecimento" />
-		<mapping class="br.com.baladasp.cdp.estabelecimento.Avaliacao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Promocao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Endereco" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Ranking" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Categoria" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Regiao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Musica" />
+		
+		<mapping class="br.com.baladasp.cgt.usuario.StatusUsuario" />
+		<mapping class="br.com.baladasp.cgt.usuario.AtividadeUsuario" />
+		<mapping class="br.com.baladasp.cgt.usuario.Checkin" />
+		<mapping class="br.com.baladasp.cgt.usuario.Avaliacao" />
+		<mapping class="br.com.baladasp.cgt.usuario.OperacaoAtividadeUsuario" />
 	</session-factory>
 
 </hibernate-configuration>

@@ -2,34 +2,34 @@ package br.com.baladasp.cgt.bo;
 
 import java.util.ArrayList;
 
-import br.com.baladasp.cdp.estabelecimento.Avaliacao;
-import br.com.baladasp.cdp.usuario.AtividadesUsuario;
 import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgd.dao.AbstractSelectDAO;
+import br.com.baladasp.cgt.usuario.AtividadeUsuario;
+import br.com.baladasp.cgt.usuario.Avaliacao;
 
 @SuppressWarnings("rawtypes")
 public class AtividadesUsuarioBO extends AbstractCRUD {
 
 	@SuppressWarnings("unchecked")
 	public AtividadesUsuarioBO() {
-		classeBO = new BaseBO<Avaliacao>(AtividadesUsuario.class);
-		classeDAO = new AbstractSelectDAO<AtividadesUsuario>(AtividadesUsuario.class);
+		classeBO = new BaseBO<Avaliacao>(AtividadeUsuario.class);
+		classeDAO = new AbstractSelectDAO<AtividadeUsuario>(AtividadeUsuario.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public void salvarAtividade(AtividadesUsuario atividade) {
-
+	public void salvarAtividade(AtividadeUsuario atividade) {
+		atividade.checkinUsuario();
 		save(atividade);
 	}
 
-	public AtividadesUsuario consultarAtividade(long id) {
-		return (AtividadesUsuario) findByID(id);
+	public AtividadeUsuario consultarAtividade(long id) {
+		return (AtividadeUsuario) findByID(id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<AtividadesUsuario> consultarDezUltimasAtividadesUsuario(Usuario usuario) {
-		String namedQuery = "AtividadesUsuario.findByUsuario";
-		
-		return (ArrayList<AtividadesUsuario>) findByParameterWithMaxResults(namedQuery, usuario);
+	public ArrayList<AtividadeUsuario> consultarDezUltimasAtividadesUsuario(Usuario usuario) {
+		String namedQuery = "AtividadeUsuario.findByUsuario";
+
+		return (ArrayList<AtividadeUsuario>) findByParameterWithMaxResults(namedQuery, usuario);
 	}
 }

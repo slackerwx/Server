@@ -1,4 +1,4 @@
-package br.com.baladasp.cdp.usuario;
+package br.com.baladasp.cgt.usuario;
 
 import java.io.Serializable;
 
@@ -11,10 +11,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-@NamedQueries({ @NamedQuery(name = "StatusUsuarios.getAll", query = "from StatusUsuarios order by createdAt DESC") })
+@NamedQueries({ @NamedQuery(name = "StatusUsuarios.getAll", query = "from StatusUsuario order by createdAt DESC") })
 @Entity
 @Table(name = "tb_status_usuarios")
-public class StatusUsuarios implements Serializable {
+public class StatusUsuario implements Serializable {
 	/**
 	 * 
 	 */
@@ -25,19 +25,20 @@ public class StatusUsuarios implements Serializable {
 	@Column(name = "id")
 	private long id;
 
-	private long userID;
+	//TODO adicionar usuario aqui
+	private long idtwitter;
 	private String screenName;
 	private String createdAt;
 	private String profileImageURL;
 	private String text;
 
-	public StatusUsuarios() {
+	public StatusUsuario() {
 
 	}
 
-	public StatusUsuarios(long userID, String screenName, String date, String profileImageURL, String text) {
+	public StatusUsuario(long userID, String screenName, String date, String profileImageURL, String text) {
 		super();
-		this.userID = userID;
+		this.idtwitter = userID;
 		this.screenName = screenName;
 		this.createdAt = date;
 		this.profileImageURL = profileImageURL;
@@ -45,11 +46,11 @@ public class StatusUsuarios implements Serializable {
 	}
 
 	public long getUserID() {
-		return userID;
+		return idtwitter;
 	}
 
 	public void setUserID(long userID) {
-		this.userID = userID;
+		this.idtwitter = userID;
 	}
 
 	public void setScreenName(String screenName) {
@@ -88,7 +89,7 @@ public class StatusUsuarios implements Serializable {
 
 	@Override
 	public String toString() {
-		return "StatusUsuarios [userID=" + userID + ", screenName=" + screenName + ", createdAt=" + createdAt
+		return "StatusUsuarios [userID=" + idtwitter + ", screenName=" + screenName + ", createdAt=" + createdAt
 				+ ", profileImageURL=" + profileImageURL + ", text=" + text + "]";
 	}
 
@@ -97,7 +98,7 @@ public class StatusUsuarios implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((screenName == null) ? 0 : screenName.hashCode());
-		result = prime * result + (int) (userID ^ (userID >>> 32));
+		result = prime * result + (int) (idtwitter ^ (idtwitter >>> 32));
 		return result;
 	}
 
@@ -109,13 +110,13 @@ public class StatusUsuarios implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		StatusUsuarios other = (StatusUsuarios) obj;
+		StatusUsuario other = (StatusUsuario) obj;
 		if (screenName == null) {
 			if (other.screenName != null)
 				return false;
 		} else if (!screenName.equals(other.screenName))
 			return false;
-		if (userID != other.userID)
+		if (idtwitter != other.idtwitter)
 			return false;
 		return true;
 	}

@@ -6,18 +6,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.com.baladasp.cdp.constantes.EnumEstabelecimento;
-import br.com.baladasp.cdp.estabelecimento.Avaliacao;
 import br.com.baladasp.cdp.estabelecimento.Categoria;
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Ranking;
-import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgt.bo.EstabelecimentoBO;
 import br.com.baladasp.cgt.bo.RankingBO;
-import br.com.baladasp.cgt.util.AvaliacaoSerializer;
-import br.com.baladasp.cgt.util.EstabelecimentoSerializer;
-import br.com.baladasp.cgt.util.EstabelecimentosSerializer;
-import br.com.baladasp.cgt.util.RankingSerializer;
-import br.com.baladasp.cgt.util.UsuarioSerializer;
+import br.com.baladasp.cgt.usuario.Avaliacao;
+import br.com.baladasp.cgt.util.json.serializer.AvaliacaoSerializer;
+import br.com.baladasp.cgt.util.json.serializer.EstabelecimentosSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,10 +25,9 @@ import com.google.gson.GsonBuilder;
  */
 public class TratarEstabelecimento {
 	private Gson gsonSer = new GsonBuilder().registerTypeAdapter(Avaliacao.class, new AvaliacaoSerializer())
-			.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoSerializer())
-			.registerTypeAdapter(Ranking.class, new RankingSerializer())
+			
 			.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-			.registerTypeAdapter(Usuario.class, new UsuarioSerializer()).setPrettyPrinting().create();
+			.setPrettyPrinting().create();
 
 	public Object operacoes(String[] receivedJsonString) throws UnsupportedEncodingException {
 		Gson gsonUtils = new Gson();

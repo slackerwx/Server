@@ -1,44 +1,51 @@
 package br.com.baladasp.test;
 
-import br.com.baladasp.cdp.usuario.StatusUsuarios;
-import br.com.baladasp.cgt.bo.StatusUsuariosBO;
+import java.util.ArrayList;
+
 import junit.framework.TestCase;
 
+import org.junit.Test;
+
+import br.com.baladasp.cgt.bo.StatusUsuariosBO;
+import br.com.baladasp.cgt.usuario.StatusUsuario;
+
+//TODO criar Strategy ??
 public class StatusUsuariosBOTest extends TestCase implements BOTest {
 
 	StatusUsuariosBO statusUsuariosBO;
-	StatusUsuarios statusUsuarios;
-	
+	StatusUsuario statusUsuario;
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		statusUsuariosBO = new StatusUsuariosBO();
-		statusUsuarios = new StatusUsuarios();
+
+		statusUsuario = new StatusUsuario(1, "UsuarioTest", "20/02/14 02:56", "", "#appbaladasp Teste");
 		
 	}
 
 	@Override
 	public void testInsert() {
-		// TODO Auto-generated method stub
-
+		statusUsuariosBO.inserirStatus(statusUsuario);
 	}
 
 	@Override
-	public void testUpdate() {
-		// TODO Auto-generated method stub
-
-	}
+	public void testUpdate() {}
 
 	@Override
 	public void testDelete() {
-		// TODO Auto-generated method stub
-
+		statusUsuariosBO.excluirStatus(statusUsuario);
 	}
 
 	@Override
-	public void testSelectById() {
-		// TODO Auto-generated method stub
+	public void testSelectById() {}
 
+	@Test
+	public void testConsultaStatusTimeline() {
+		ArrayList<StatusUsuario> statusUsuarios = statusUsuariosBO.consultaStatusTimeline();
+
+		assertNotNull(statusUsuarios);
+		assertTrue(statusUsuarios.size() > 0);
 	}
 
 }

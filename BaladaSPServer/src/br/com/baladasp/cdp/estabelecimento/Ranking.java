@@ -1,5 +1,6 @@
 package br.com.baladasp.cdp.estabelecimento;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,28 +23,37 @@ public class Ranking {
 	@Column(name = "cod_ranking")
 	long id;
 
-	long pontos;
+	float pontos;
 	float mediaAvaliacoes;
 
 	@OneToOne
 	private Categoria categoria;
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private Estabelecimento estabelecimento;
 
 	public Ranking() {
 
 	}
 
-	public Ranking(long id, long total, Categoria categoria) {
+	public Ranking(long id, long pontos, Categoria categoria) {
 		this.id = id;
-		this.pontos = total;
+		this.pontos = pontos;
 		this.categoria = categoria;
 	}
 
-	public Ranking(Estabelecimento estabelecimento, Categoria categoria, int total) {
+	public Ranking(Estabelecimento estabelecimento, float media, float pontos) {
 		this.estabelecimento = estabelecimento;
+		this.categoria = estabelecimento.getCategoria();
+		this.mediaAvaliacoes = media;
+		this.pontos = pontos;
+	}
+
+	//JSON
+	public Ranking(long id, long pontos, Categoria categoria, float mediaAvaliacoes) {
+		this.id = id;
+		this.pontos = pontos;
 		this.categoria = categoria;
-		this.pontos = total;
+		this.mediaAvaliacoes = mediaAvaliacoes;
 	}
 
 	public void setCategoria(Categoria categoria) {
@@ -66,12 +76,12 @@ public class Ranking {
 		this.id = id;
 	}
 
-	public long getPontos() {
+	public float getPontos() {
 		return pontos;
 	}
 
-	public void setPontos(long pontos) {
-		this.pontos = pontos;
+	public void setPontos(float total) {
+		this.pontos = total;
 	}
 
 	public float getMediaAvaliacoes() {
