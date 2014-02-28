@@ -39,6 +39,7 @@ public class TratarUsuarioTest extends TestCase {
 
 		estabelecimento = estabelecimentoBO.consultarEstabelecimentoID(5);
 		assertNotNull(estabelecimento);
+		
 
 		tratarUsuario = new TratarUsuario();
 	}

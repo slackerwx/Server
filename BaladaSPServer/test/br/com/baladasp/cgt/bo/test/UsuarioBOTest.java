@@ -1,4 +1,4 @@
-package br.com.baladasp.test;
+package br.com.baladasp.cgt.bo.test;
 
 import junit.framework.TestCase;
 
@@ -61,6 +61,7 @@ public class UsuarioBOTest extends TestCase implements BOTest {
 	public void testDelete() {
 		usuarioBO.excluirUsuario(usuario);
 	}
+	
 
 	@Override
 	protected void tearDown() throws Exception {

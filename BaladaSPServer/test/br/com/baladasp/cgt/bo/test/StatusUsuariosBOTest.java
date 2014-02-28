@@ -1,4 +1,4 @@
-package br.com.baladasp.test;
+package br.com.baladasp.cgt.bo.test;
 
 import java.util.ArrayList;
 
