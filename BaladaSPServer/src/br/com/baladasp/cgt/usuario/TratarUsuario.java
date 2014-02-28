@@ -115,6 +115,8 @@ public class TratarUsuario extends OperacoesEstabelecimento {
 				final float novaPontuacao = pontuacaoRankingAtual + avaliacao.getTotaldePontos();
 				ranking.setPontos(novaPontuacao);
 
+				// TODO fiz isso em EstabelecimentoDeserializer mas nao sei se foi a melhor escolha
+				// ranking.setEstabelecimento(estabelecimento);
 			} else {
 				ranking = new Ranking(estabelecimento, avaliacao.getMediaAvaliacao(), avaliacao.getTotaldePontos());
 				estabelecimento.setRanking(ranking);

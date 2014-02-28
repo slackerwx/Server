@@ -71,7 +71,7 @@ public class Estabelecimento implements Serializable {
 	public Estabelecimento(long id, String nome, String descricaoEstabelecimento, String urlLogo, String site, String facebook,
 			String twitter, String youtube, String horarioFuncionamento, String telefone, boolean delivery,
 			boolean estacionamento, boolean wifi, String classificacaoEtaria, String evento, String publico, String decoracao,
-			String ambiente, Musica musica, Categoria categoria, Ranking ranking, Endereco endereco, int qtdAvaliacoes) {
+			String ambiente, Musica musica, Categoria categoria, Endereco endereco, int qtdAvaliacoes) {
 
 		this.id = id;
 		this.nome = nome;
@@ -93,7 +93,6 @@ public class Estabelecimento implements Serializable {
 		this.wifi = wifi;
 		this.musica = musica;
 		this.categoria = categoria;
-		this.ranking = ranking;
 		this.endereco = endereco;
 		this.qtdAvaliacoes = qtdAvaliacoes;
 	}

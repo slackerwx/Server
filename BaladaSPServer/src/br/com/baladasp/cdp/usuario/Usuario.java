@@ -21,12 +21,12 @@ public class Usuario implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String usuario;
 
 	@Id
 	private long IDTwitter;
 	private String screenName;
 	private String urlImagem;
+	private String usuario;
 
 	private int qtdCheckins;
 	private int bares;
