@@ -14,3 +14,4 @@ public class OperacoesEstabelecimento {
 			.registerTypeAdapter(ArrayList.class, new StatusUsuariosSerializer()).setPrettyPrinting().create();
 
 }
+ 

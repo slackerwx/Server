@@ -27,7 +27,7 @@ public class AvaliacaoSerializer implements JsonSerializer<Avaliacao> {
 		json.addProperty("comentario", avaliacao.getComentario());
 		json.addProperty("dataAvaliacao", avaliacao.getDataAtividade().toString());
 
-		//json.add("atividadeUsuario", context.serialize(avaliacao.getAtividadeUsuario()));
+		// json.add("atividadeUsuario", context.serialize(avaliacao.getAtividadeUsuario()));
 
 		return json;
 	}

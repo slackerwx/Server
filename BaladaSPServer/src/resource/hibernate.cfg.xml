@@ -10,7 +10,7 @@
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="connection.url">jdbc:mysql://localhost/appbaladaspbd</property>
 		<property name="connection.username">root</property>
-		<property name="connection.password"></property>
+		<property name="connection.password">kbw91136</property>
 
 		<!-- !!! cofigurar o pool corretamente -->
 		<!-- JDBC connection pool (use the built-in) -->

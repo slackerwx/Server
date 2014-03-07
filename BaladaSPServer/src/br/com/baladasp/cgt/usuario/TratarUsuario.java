@@ -29,10 +29,12 @@ import com.google.gson.GsonBuilder;
  */
 public class TratarUsuario extends OperacoesEstabelecimento {
 
-	private Gson gsonUtils = new GsonBuilder().registerTypeAdapter(Avaliacao.class, new AvaliacaoSerializer())
-			.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-			.registerTypeAdapter(AtividadeUsuario.class, new AtividadeUsuarioDeserializer())
-			.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoDeserializer()).setPrettyPrinting().create();
+	private Gson gsonUtils = new GsonBuilder().registerTypeAdapter(AtividadeUsuario.class, new AtividadeUsuarioDeserializer())
+												.registerTypeAdapter(Avaliacao.class, new AvaliacaoSerializer())
+												.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
+												.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoDeserializer())
+												.setPrettyPrinting()
+												.create();
 
 	public Object operacoes(String[] receivedJsonString) {
 		final String operacao = gsonUtils.fromJson(receivedJsonString[1], String.class);

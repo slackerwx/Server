@@ -61,7 +61,7 @@ public class UsuarioBOTest extends TestCase implements BOTest {
 	public void testDelete() {
 		usuarioBO.excluirUsuario(usuario);
 	}
-	
+	 
 
 	@Override
 	protected void tearDown() throws Exception {

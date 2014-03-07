@@ -19,9 +19,9 @@ import br.com.baladasp.cgt.usuario.Checkin;
 import br.com.baladasp.cgt.usuario.ConsultaCheckinAvaliacao;
 import br.com.baladasp.cgt.usuario.StatusUsuario;
 import br.com.baladasp.cgt.usuario.TratarUsuario;
-import br.com.baladasp.util.Json;
+import br.com.baladasp.util.JsonUsuario;
 
-public class TratarUsuarioTest extends TestCase {
+public class TratarUsuarioTest extends TestCase implements Tratamento {
 	private static String TIPO_OBJETO = ConstantesUsuario.USUARIO;
 	private static String OPERACAO_OBJETO = null;
 	private String[] sendJson;
@@ -29,9 +29,11 @@ public class TratarUsuarioTest extends TestCase {
 	private TratarUsuario tratarUsuario;
 	private Usuario usuario;
 	private Estabelecimento estabelecimento;
- 
+
 	private EstabelecimentoBO estabelecimentoBO = new EstabelecimentoBO();
 	private UsuarioBO usuarioBO = new UsuarioBO();
+
+	private JsonUsuario jsonUsuario;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,8 +41,8 @@ public class TratarUsuarioTest extends TestCase {
 
 		estabelecimento = estabelecimentoBO.consultarEstabelecimentoID(5);
 		assertNotNull(estabelecimento);
-		
 
+		jsonUsuario = new JsonUsuario();
 		tratarUsuario = new TratarUsuario();
 	}
 
@@ -48,10 +50,10 @@ public class TratarUsuarioTest extends TestCase {
 	public void testTratarPerfil() throws UnsupportedEncodingException {
 		OPERACAO_OBJETO = ConstantesUsuario.PERFIL;
 
-		sendJson = Json.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, usuario);
+		sendJson = jsonUsuario.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, usuario);
 		String jsonSerialized = criarJson(operacao(sendJson));
 
-		usuario = (Usuario) Json.deserializar(jsonSerialized, Usuario.class);
+		usuario = (Usuario) jsonUsuario.deserializar(jsonSerialized, Usuario.class);
 		assertNotNull(usuario);
 	}
 
@@ -61,10 +63,10 @@ public class TratarUsuarioTest extends TestCase {
 
 		ConsultaCheckinAvaliacao consultaCheckinAvaliacao = new ConsultaCheckinAvaliacao(usuario, estabelecimento.getNome());
 
-		sendJson = Json.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, consultaCheckinAvaliacao);
+		sendJson = jsonUsuario.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, consultaCheckinAvaliacao);
 		String jsonSerialized = criarJson(operacao(sendJson));
 
-		String msg = (String) Json.deserializar(jsonSerialized, String.class);
+		String msg = (String) jsonUsuario.deserializar(jsonSerialized, String.class);
 		// assertEquals(ConstantesUsuario.MSG_NAO_AVALIADO, msg);
 		assertEquals(ConstantesUsuario.MSG_JA_AVALIADO, msg);
 	}
@@ -78,12 +80,12 @@ public class TratarUsuarioTest extends TestCase {
 
 		Checkin checkin = new Checkin(estabelecimento);
 		AtividadeUsuario atividadeUsuario = new AtividadeUsuario(usuario, checkin);
-		sendJson = Json.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, atividadeUsuario);
+		sendJson = jsonUsuario.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, atividadeUsuario);
 
 		String jsonSerialized = criarJson(operacao(sendJson));
 		assertNotNull(jsonSerialized);
 
-		String msg = (String) Json.deserializar(jsonSerialized, String.class);
+		String msg = (String) jsonUsuario.deserializar(jsonSerialized, String.class);
 		assertEquals(ConstantesUsuario.MSG_OK_CHECKIN, msg);
 
 	}
@@ -97,12 +99,12 @@ public class TratarUsuarioTest extends TestCase {
 
 		Avaliacao avaliacao = new Avaliacao(5, 5, 5, 5, 5, 5, 5, 5, "OK", estabelecimento);
 		AtividadeUsuario atividadeUsuario = new AtividadeUsuario(usuario, avaliacao);
-		sendJson = Json.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, atividadeUsuario);
+		sendJson = jsonUsuario.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, atividadeUsuario);
 
 		String jsonSerialized = criarJson(operacao(sendJson));
 		assertNotNull(jsonSerialized);
 
-		String msg = (String) Json.deserializar(jsonSerialized, String.class);
+		String msg = (String) jsonUsuario.deserializar(jsonSerialized, String.class);
 		assertEquals(ConstantesUsuario.MSG_OK_AVALIADO, msg);
 
 	}
@@ -111,27 +113,29 @@ public class TratarUsuarioTest extends TestCase {
 	public void testTratarListStatus() {
 		OPERACAO_OBJETO = ConstantesUsuario.LIST_STATUS;
 
-		sendJson = Json.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, null);
+		sendJson = jsonUsuario.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, null);
 
 		String jsonSerialized = criarJson(operacao(sendJson));
 		assertNotNull(jsonSerialized);
 
-		ArrayList<StatusUsuario> statusUsuarios = (ArrayList<StatusUsuario>) Json.deserializar(jsonSerialized, ArrayList.class);
+		ArrayList<StatusUsuario> statusUsuarios = (ArrayList<StatusUsuario>) jsonUsuario.deserializar(jsonSerialized, ArrayList.class);
 		assertNotNull(statusUsuarios);
 
 	}
 
-	private Object operacao(String[] sendJson) {
+	@Override
+	public String criarJson(Object object) {
+		String jsonSerialized = (String) object;
+		assertNotNull(jsonSerialized);
+		return jsonSerialized;
+	}
+
+	@Override
+	public Object operacao(String[] sendJson) {
 		Object object = tratarUsuario.operacoes(sendJson);
 		assertNotNull(object);
 
 		return object;
-	}
-
-	private String criarJson(Object object) {
-		String jsonSerialized = (String) object;
-		assertNotNull(jsonSerialized);
-		return jsonSerialized;
 	}
 
 }

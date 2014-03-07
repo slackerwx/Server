@@ -20,9 +20,6 @@ public class AtividadeUsuarioSerializer implements JsonSerializer<AtividadeUsuar
 		jsonAtividadeUsuario.addProperty("tipoAtividade", atividadeUsuario.getTipoAtividadeString());
 		jsonAtividadeUsuario.addProperty("dataAtividade", atividadeUsuario.getDataAtividade());
 
-		/*
-		 * Nao da para enviar Avaliacao p/ context pois fica em loop
-		 */
 		Avaliacao avaliacao = atividadeUsuario.getAvaliacao();
 		if (avaliacao != null) {
 			processarAvaliacao(avaliacao, jsonAtividadeUsuario, context);
@@ -44,17 +41,7 @@ public class AtividadeUsuarioSerializer implements JsonSerializer<AtividadeUsuar
 	}
 
 	private void processarAvaliacao(Avaliacao avaliacao, JsonObject jsonAtividadeUsuario, JsonSerializationContext context) {
-		jsonAtividadeUsuario.addProperty("preco", avaliacao.getPreco());
-		jsonAtividadeUsuario.addProperty("atendimento", avaliacao.getAtendimento());
-		jsonAtividadeUsuario.addProperty("cardapio", avaliacao.getCardapio());
-		jsonAtividadeUsuario.addProperty("ambiente", avaliacao.getAmbiente());
-		jsonAtividadeUsuario.addProperty("estacionamento", avaliacao.getEstacionamento());
-		jsonAtividadeUsuario.addProperty("geral", avaliacao.getGeral());
-		jsonAtividadeUsuario.addProperty("atracao", avaliacao.getAtracao());
-		jsonAtividadeUsuario.addProperty("localizacao", avaliacao.getLocalizacao());
-		jsonAtividadeUsuario.addProperty("total", avaliacao.getMediaAvaliacao());
-		jsonAtividadeUsuario.addProperty("comentario", avaliacao.getComentario());
-		jsonAtividadeUsuario.addProperty("dataAvaliacao", avaliacao.getDataAtividade().toString());
+		jsonAtividadeUsuario.add("avaliacao", context.serialize(avaliacao));
 
 		jsonAtividadeUsuario.add("estabelecimento", context.serialize(avaliacao.getEstabelecimento()));
 	}

@@ -9,7 +9,6 @@ import org.junit.Test;
 import br.com.baladasp.cgt.bo.StatusUsuariosBO;
 import br.com.baladasp.cgt.usuario.StatusUsuario;
 
-//TODO criar Strategy ??
 public class StatusUsuariosBOTest extends TestCase implements BOTest {
 
 	StatusUsuariosBO statusUsuariosBO;

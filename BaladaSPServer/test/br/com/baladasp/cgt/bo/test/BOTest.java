@@ -4,6 +4,8 @@ import org.junit.Test;
 
 public interface BOTest {
 
+	
+	//oi
 	@Test
 	public void testInsert();
 

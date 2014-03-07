@@ -4,9 +4,7 @@ import java.lang.reflect.Type;
 
 import br.com.baladasp.cdp.estabelecimento.Endereco;
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
-import br.com.baladasp.cgt.usuario.Avaliacao;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
@@ -19,18 +17,9 @@ public class EstabelecimentoSerializer implements JsonSerializer<Estabelecimento
 
 		processarEstabelecimento(estab, json, context);
 		processarEndereco(estab, json);
-//		processarAvaliacao(estab, context, json);
 
 		return json;
 	}
-
-//	private void processarAvaliacao(Estabelecimento estab, JsonSerializationContext context, JsonObject json) {
-//		JsonArray avaliacaoArray = new JsonArray();
-//		json.add("avaliacoes", avaliacaoArray);
-//		for (Avaliacao avaliacao : estab.get) {
-//			avaliacaoArray.add(context.serialize(avaliacao));
-//		}
-//	}
 
 	private void processarEstabelecimento(Estabelecimento estab, JsonObject json, JsonSerializationContext context) {
 		json.addProperty("id", estab.getId());
@@ -48,11 +37,12 @@ public class EstabelecimentoSerializer implements JsonSerializer<Estabelecimento
 		json.addProperty("wifi", estab.isWifi());
 		json.addProperty("classificacaoEtaria", estab.getClassificacaoEtaria());
 		json.addProperty("evento", estab.getEvento());
-		json.addProperty("tipoLocal", estab.getCategoria().getCategoria());
+		json.addProperty("categoria", estab.getCategoria().getCategoria());
 		json.addProperty("publico", estab.getPublico());
 		json.addProperty("decoracao", estab.getDecoracao());
 		json.addProperty("musica", estab.getMusica().getMusica());
 		json.addProperty("ambiente", estab.getAmbiente());
+		json.addProperty("qtdAvaliacoes", estab.getQtdAvaliacoes());
 
 		json.add("ranking", context.serialize(estab.getRanking()));
 

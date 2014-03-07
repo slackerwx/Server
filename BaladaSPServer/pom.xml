@@ -23,7 +23,13 @@
 				</excludes>
 			</testResource>
 		</testResources>
+
 		<plugins>
+			<plugin>
+				<groupid>org.apache.maven.plugins</groupid>
+				<artifactid>maven-resources-plugin</artifactid>
+				<version>3.0</version>
+			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>

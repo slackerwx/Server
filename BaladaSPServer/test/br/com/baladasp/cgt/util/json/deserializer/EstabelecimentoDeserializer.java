@@ -21,7 +21,7 @@ public class EstabelecimentoDeserializer implements JsonDeserializer<Estabelecim
 	public Estabelecimento deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
 
 		JsonObject json = jsonElement.getAsJsonObject();
- 
+
 		long id = json.get("id").getAsLong();
 		String nome = json.get("nome").getAsString();
 		String descricaoEstabelecimento = json.get("descricaoEstabelecimento").getAsString();
@@ -42,10 +42,8 @@ public class EstabelecimentoDeserializer implements JsonDeserializer<Estabelecim
 		String ambiente = json.get("ambiente").getAsString();
 		int qtdAvaliacoes = json.get("qtdAvaliacoes").getAsInt();
 
-		JsonObject jsnObjMusica = json.get("musica").getAsJsonObject();
-		Musica musica = new Musica(jsnObjMusica.get("musica").getAsString());
-		JsonObject jsnObjCategoria = json.get("categoria").getAsJsonObject();
-		Categoria categoria = new Categoria(jsnObjCategoria.get("categoria").getAsString());
+		Musica musica = new Musica(json.get("musica").getAsString());
+		Categoria categoria = new Categoria(json.get("categoria").getAsString());
 
 		JsonElement elementRanking = json.get("ranking");
 
@@ -55,16 +53,18 @@ public class EstabelecimentoDeserializer implements JsonDeserializer<Estabelecim
 			ranking = processarRanking(jsnObj);
 		}
 
-		Endereco endereco = processarEndereco(json.get("endereco").getAsJsonObject());
+		Endereco endereco = processarEndereco(json);
 
-		Estabelecimento estabelecimento = new Estabelecimento(id, nome, descricaoEstabelecimento, urlLogo, site, facebook, twitter, youtube, horarioFuncionamento, telefone,
-				delivery, estacionamento, wifi, classificacaoEtaria, evento, publico, decoracao, ambiente, musica, categoria,  endereco, qtdAvaliacoes);
-		
-		//TODO decidir a melhor maneira p/ implementar isso
-		ranking.setEstabelecimento(estabelecimento);
-		estabelecimento.setRanking(ranking);
-		
-		return estabelecimento; 
+		Estabelecimento estabelecimento = new Estabelecimento(id, nome, descricaoEstabelecimento, urlLogo, site, facebook, twitter, youtube,
+				horarioFuncionamento, telefone, delivery, estacionamento, wifi, classificacaoEtaria, evento, publico, decoracao, ambiente, musica,
+				categoria, endereco, qtdAvaliacoes);
+
+		// TODO decidir a melhor maneira p/ implementar isso
+		if (ranking != null) {
+			ranking.setEstabelecimento(estabelecimento);
+			estabelecimento.setRanking(ranking);
+		}
+		return estabelecimento;
 
 	}
 
@@ -76,8 +76,7 @@ public class EstabelecimentoDeserializer implements JsonDeserializer<Estabelecim
 		String bairro = (jsonObject.get("bairro").getAsString());
 		String cep = (jsonObject.get("cep").getAsString());
 
-		JsonObject jsnObjRegiao = jsonObject.get("regiao").getAsJsonObject();
-		Regiao regiao = new Regiao(jsnObjRegiao.get("regiao").getAsString());
+		Regiao regiao = new Regiao(jsonObject.get("regiao").getAsString());
 
 		return new Endereco(endereco, rua, numero, bairro, cep, regiao);
 	}
