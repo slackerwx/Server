@@ -1,0 +1,4 @@
+#BaladaSPServer
+
+Eh um servidor Socket para tratar requisições de um aplicativo Android que estou desenvolvendo.
+Utilizo Hibernate e Gson.
