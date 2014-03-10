@@ -22,20 +22,8 @@ public class StatusUsuariosSerializer implements JsonSerializer<ArrayList<Status
 		json.add("statusUsuarios", statusJsonArray);
 
 		for (StatusUsuario status : statusUsuarios) {
-			statusJsonArray.add(serializarStatus(status));
+			statusJsonArray.add(context.serialize(status));
 		}
-
-		return json;
-	}
-
-	private JsonElement serializarStatus(StatusUsuario status) {
-
-		JsonObject json = new JsonObject();
-		json.addProperty("userID", status.getUserID());
-		json.addProperty("screenName", status.getScreenName());
-		json.addProperty("text", status.getText());
-		json.addProperty("profileImageURL", status.getProfileImageURL());
-		json.addProperty("createdAt", status.getCreatedAt());
 
 		return json;
 	}

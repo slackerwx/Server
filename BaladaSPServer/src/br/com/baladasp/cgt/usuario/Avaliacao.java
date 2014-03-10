@@ -1,6 +1,7 @@
 package br.com.baladasp.cgt.usuario;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,11 +9,13 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.google.gson.annotations.Expose;
+
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 
 @NamedQueries({
 		@NamedQuery(name = "Avaliacao.findByEstabelecimento", query = "from Avaliacao as e where e.estabelecimento = :parametro"),
-		@NamedQuery(name = "Avaliacao.findByAtividadeUsuario", query = "from Avaliacao as a where a.atividadeUsuario = :parametro order by cod_avaliacao DESC") })
+		})
 @Entity
 @Table(name = "tb_avaliacao")
 public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable {
@@ -22,17 +25,17 @@ public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private int preco;
-	private int atendimento;
-	private int cardapio;
-	private int ambiente;
-	private int estacionamento;
-	private int geral;
-	private int atracao;
-	private int localizacao;
-	private String comentario;
-	private float mediaAvaliacao;
-	private float totalDePontos;
+	@Expose private int preco;
+	@Expose private int atendimento;
+	@Expose private int cardapio;
+	@Expose private int ambiente;
+	@Expose private int estacionamento;
+	@Expose private int geral;
+	@Expose private int atracao;
+	@Expose private int localizacao;
+	@Expose private String comentario;
+	@Expose private float mediaAvaliacao;
+	@Expose private float totalDePontos;
 
 	public Avaliacao() {
 
@@ -121,7 +124,7 @@ public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable 
 		return comentario;
 	}
 
-	public String getDataAvaliacao() {
+	public Calendar getDataAvaliacao() {
 		return dataAtividade;
 	}
 
@@ -166,7 +169,7 @@ public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable 
 		return "Avaliacao [id=" + id + ", preco=" + preco + ", atendimento=" + atendimento + ", cardapio=" + cardapio + ", ambiente=" + ambiente
 				+ ", estacionamento=" + estacionamento + ", geral=" + geral + ", atracao=" + atracao + ", localizacao=" + localizacao
 				+ ", comentario=" + comentario + ", mediaAvaliacao=" + mediaAvaliacao + ", totalDePontos=" + totalDePontos + ", dataAtividade="
-				+ dataAtividade + ", atividadeUsuario=" + atividadeUsuario + ", estabelecimento=" + estabelecimento + "]";
+				+ dataAtividade + ", estabelecimento=" + estabelecimento + "]";
 	}
 
 }

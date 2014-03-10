@@ -6,15 +6,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "tb_musica")
 public class Musica {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_musica")
-	private long id;
+	@Expose private long id;
 
-	private String musica;
+	@Expose private String musica;
 
 	public Musica() {
 

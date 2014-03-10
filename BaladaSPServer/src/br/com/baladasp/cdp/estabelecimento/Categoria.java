@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 import br.com.baladasp.cdp.constantes.EnumCategoriasTopDez;
 
 @Entity
@@ -14,9 +16,9 @@ public class Categoria {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_categoria")
-	private long idCategoria;
+	@Expose private long idCategoria;
 
-	private String categoria;
+	@Expose  private String categoria;
 
 	public Categoria() {
 

@@ -1,7 +1,7 @@
 package br.com.baladasp.cgt.usuario;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,12 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
 import br.com.baladasp.cdp.usuario.Usuario;
-import br.com.baladasp.util.Utils;
+
+import com.google.gson.annotations.Expose;
 
 @NamedQueries({ @NamedQuery(name = "AtividadeUsuario.findByUsuario", query = "FROM AtividadeUsuario AS a WHERE a.usuario = :parametro order by cod_atividade DESC") })
 @Entity
@@ -31,17 +34,18 @@ public class AtividadeUsuario implements Serializable {
 	@Column(name = "cod_atividade")
 	private long id;
 
-	private String tipoAtividade;
-	private String dataAtividade = Utils.formatarData(new Date());
+	@Expose private String tipoAtividade;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Expose private Calendar dataAtividade =  Calendar.getInstance();
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Usuario usuario;
+	@Expose private Usuario usuario;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Checkin checkin;
+	@Expose private Checkin checkin;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Avaliacao avaliacao;
+	@Expose private Avaliacao avaliacao;
 
 	public AtividadeUsuario() {
 
@@ -51,14 +55,12 @@ public class AtividadeUsuario implements Serializable {
 		this.usuario = usuarioTwitter;
 		this.checkin = checkin;
 		this.tipoAtividade = "Checkin";
-		checkin.setAtividadeUsuario(this);
 	}
 
 	public AtividadeUsuario(Usuario usuarioTwitter, Avaliacao avaliacao) {
 		this.usuario = usuarioTwitter;
 		this.avaliacao = avaliacao;
 		this.tipoAtividade = "Avaliacao";
-		avaliacao.setAtividadeUsuario(this);
 	}
 
 	public Usuario getUsuario() {
@@ -88,7 +90,7 @@ public class AtividadeUsuario implements Serializable {
 		return null;
 	}
 
-	public String getDataAtividade() {
+	public Calendar getDataAtividade() {
 		return dataAtividade;
 	}
 

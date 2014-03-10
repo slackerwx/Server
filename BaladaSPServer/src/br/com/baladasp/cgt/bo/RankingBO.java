@@ -10,7 +10,6 @@ import br.com.baladasp.cgd.dao.AbstractSelectDAO;
 @SuppressWarnings("rawtypes")
 public class RankingBO extends AbstractCRUD {
 
-
 	@SuppressWarnings("unchecked")
 	public RankingBO() {
 		classeBO = new BaseBO<Ranking>(Ranking.class);
@@ -36,7 +35,7 @@ public class RankingBO extends AbstractCRUD {
 		update(ranking);
 	}
 
-	private Ranking consultarRanking(Estabelecimento estabelecimento) {
+	public Ranking consultarRanking(Estabelecimento estabelecimento) {
 		String namedQuery = "Ranking.findByEstabelecimento";
 
 		return (Ranking) findByParameterUniqueResult(namedQuery, estabelecimento);

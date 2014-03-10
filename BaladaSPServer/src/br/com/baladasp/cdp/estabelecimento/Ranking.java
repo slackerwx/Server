@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.google.gson.annotations.Expose;
+
 @NamedQueries({
 		@NamedQuery(name = "Ranking.findByCategoria", query = "from Ranking as r where r.categoria = :parametro order by mediaavaliacoes desc"),
 		@NamedQuery(name = "Ranking.findByEstabelecimento", query = "from Ranking as r where r.estabelecimento = :parametro") })
@@ -21,15 +23,15 @@ public class Ranking {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_ranking")
-	long id;
+	@Expose long id;
 
-	float pontos;
-	float mediaAvaliacoes;
+	@Expose float pontos;
+	@Expose float mediaAvaliacoes;
 
 	@OneToOne
-	private Categoria categoria;
+	@Expose private Categoria categoria;
 	@OneToOne(cascade=CascadeType.ALL)
-	private Estabelecimento estabelecimento;
+	@Expose private Estabelecimento estabelecimento;
 
 	public Ranking() {
 

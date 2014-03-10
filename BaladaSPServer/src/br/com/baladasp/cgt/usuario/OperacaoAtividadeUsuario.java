@@ -1,6 +1,6 @@
 package br.com.baladasp.cgt.usuario;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,26 +11,27 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
-import br.com.baladasp.util.Utils;
+
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class OperacaoAtividadeUsuario {
 
-	protected String dataAtividade = Utils.formatarData(new Date());
+	@Temporal(TemporalType.TIMESTAMP)
+	@Expose protected Calendar dataAtividade = Calendar.getInstance();
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "id")
-	protected long id;
-
-	@ManyToOne
-	protected AtividadeUsuario atividadeUsuario;
+	@Expose protected long id;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	protected Estabelecimento estabelecimento;
+	@Expose protected Estabelecimento estabelecimento;
 
 	public OperacaoAtividadeUsuario() {
 
@@ -48,20 +49,12 @@ public class OperacaoAtividadeUsuario {
 		this.estabelecimento = estabelecimento;
 	}
 
-	public void setDataAtividade(String dataAtividade) {
+	public void setDataAtividade(Calendar dataAtividade) {
 		this.dataAtividade = dataAtividade;
 	}
 
-	public String getDataAtividade() {
+	public Calendar getDataAtividade() {
 		return dataAtividade;
-	}
-
-	public AtividadeUsuario getAtividadeUsuario() {
-		return atividadeUsuario;
-	}
-
-	public void setAtividadeUsuario(AtividadeUsuario atividadeUsuario) {
-		this.atividadeUsuario = atividadeUsuario;
 	}
 
 }

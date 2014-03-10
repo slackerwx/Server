@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "tb_endereco")
 public class Endereco implements Serializable {
@@ -24,15 +26,15 @@ public class Endereco implements Serializable {
 	@GeneratedValue(generator = "fk_endereco_cod_estab")
 	@GenericGenerator(name = "fk_endereco_cod_estab", strategy = "foreign", parameters = @Parameter(name = "property", value = "estabelecimento"))
 	@Column(name = "cod_estab", nullable = false)
-	private long endereco;
+	@Expose private long endereco;
 
-	private String rua;
-	private String numero;
-	private String bairro;
-	private String cep;
+	@Expose private String rua;
+	@Expose private String numero;
+	@Expose private String bairro;
+	@Expose private String cep;
 	
 	@OneToOne
-	private Regiao regiao;
+	@Expose private Regiao regiao;
 
 	public Endereco() {
 

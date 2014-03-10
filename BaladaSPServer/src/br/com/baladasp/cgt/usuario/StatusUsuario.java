@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.google.gson.annotations.Expose;
+
 @NamedQueries({ @NamedQuery(name = "StatusUsuarios.getAll", query = "from StatusUsuario order by createdAt DESC") })
 @Entity
 @Table(name = "tb_status_usuarios")
@@ -23,14 +25,14 @@ public class StatusUsuario implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private long id;
+	@Expose private long id;
 
 	//TODO adicionar usuario aqui
-	private long idtwitter;
-	private String screenName;
-	private String createdAt;
-	private String profileImageURL;
-	private String text;
+	@Expose private long idtwitter;
+	@Expose private String screenName;
+	@Expose private String createdAt;
+	@Expose private String profileImageURL;
+	@Expose private String text;
 
 	public StatusUsuario() {
 

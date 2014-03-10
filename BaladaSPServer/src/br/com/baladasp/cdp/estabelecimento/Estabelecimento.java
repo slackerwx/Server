@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.google.gson.annotations.Expose;
+
 @NamedQueries({ @NamedQuery(name = "Estabelecimento.findByCategoria", query = "FROM Estabelecimento AS e WHERE e.categoria = :parametro") })
 @Entity
 @Table(name = "tb_estabelecimento")
@@ -29,49 +31,46 @@ public class Estabelecimento implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_estab")
-	private long id;
-	private String nome;
-	private String descricaoEstabelecimento;
-	private String urlLogo;
-	private String site;
-	private String facebook;
-	private String twitter;
-	private String youtube;
-	private String horarioFuncionamento;
-	private String telefone;
-	private String classificacaoEtaria;
-	private String evento;
-	private String publico;
-	private String decoracao;
-	private String ambiente;
-	private boolean delivery;
-	private boolean estacionamento;
-	private boolean wifi;
-	private int qtdAvaliacoes;
+	@Expose	private long id;
+	@Expose private String nome;
+	@Expose private String descricaoEstabelecimento;
+	@Expose private String urlLogo;
+	@Expose	private String site;
+	@Expose	private String facebook;
+	@Expose	private String twitter;
+	@Expose	private String youtube;
+	@Expose	private String horarioFuncionamento;
+	@Expose	private String telefone;
+	@Expose	private String classificacaoEtaria;
+	@Expose	private String evento;
+	@Expose	private String publico;
+	@Expose	private String decoracao;
+	@Expose	private String ambiente;
+	@Expose	private boolean delivery;
+	@Expose	private boolean estacionamento;
+	@Expose	private boolean wifi;
+	@Expose	private int qtdAvaliacoes;
 
 	@OneToOne
-	private Musica musica;
+	@Expose	private Musica musica;
 	@OneToOne
-	private Categoria categoria;
-	@OneToOne(cascade=CascadeType.ALL)
-	private Ranking ranking;
+	@Expose	private Categoria categoria;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@PrimaryKeyJoinColumn(name = "cod_estab")
-	private Endereco endereco;
-
+	@Expose	private Endereco endereco;
 
 	@OneToMany(mappedBy = "estabelecimento", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<Promocao> promocoes;
+	@Expose	private Set<Promocao> promocoes;
 
 	public Estabelecimento() {
 
 	}
 
-	public Estabelecimento(long id, String nome, String descricaoEstabelecimento, String urlLogo, String site, String facebook,
-			String twitter, String youtube, String horarioFuncionamento, String telefone, boolean delivery,
-			boolean estacionamento, boolean wifi, String classificacaoEtaria, String evento, String publico, String decoracao,
-			String ambiente, Musica musica, Categoria categoria, Endereco endereco, int qtdAvaliacoes) {
+	public Estabelecimento(long id, String nome, String descricaoEstabelecimento, String urlLogo, String site, String facebook, String twitter,
+			String youtube, String horarioFuncionamento, String telefone, boolean delivery, boolean estacionamento, boolean wifi,
+			String classificacaoEtaria, String evento, String publico, String decoracao, String ambiente, Musica musica, Categoria categoria,
+			Endereco endereco, int qtdAvaliacoes) {
 
 		this.id = id;
 		this.nome = nome;
@@ -101,7 +100,7 @@ public class Estabelecimento implements Serializable {
 		return qtdAvaliacoes;
 	}
 
-	public void aumentarQtdAvaliacoes(){
+	public void aumentarQtdAvaliacoes() {
 		this.qtdAvaliacoes++;
 	}
 
@@ -273,14 +272,6 @@ public class Estabelecimento implements Serializable {
 		this.musica = musica;
 	}
 
-	public Ranking getRanking() {
-		return ranking;
-	}
-
-	public void setRanking(Ranking ranking) {
-		this.ranking = ranking;
-	}
-
 	public String getDescricaoEstabelecimento() {
 		return descricaoEstabelecimento;
 	}
@@ -327,13 +318,12 @@ public class Estabelecimento implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Estabelecimento [id=" + id + ", nome=" + nome + ", descricaoEstabelecimento=" + descricaoEstabelecimento
-				+ ", urlLogo=" + urlLogo + ", site=" + site + ", facebook=" + facebook + ", twitter=" + twitter + ", youtube="
-				+ youtube + ", horarioFuncionamento=" + horarioFuncionamento + ", telefone=" + telefone
-				+ ", classificacaoEtaria=" + classificacaoEtaria + ", evento=" + evento + ", publico=" + publico + ", decoracao="
-				+ decoracao + ", ambiente=" + ambiente + ", delivery=" + delivery + ", estacionamento=" + estacionamento
-				+ ", wifi=" + wifi + ", musica=" + musica + ", categoria=" + categoria + ", ranking=" + ranking + ", endereco="
-				+ endereco + ", qtdAvaliacoes=" + qtdAvaliacoes + ", promocoes=" + promocoes + "]";
+		return "Estabelecimento [id=" + id + ", nome=" + nome + ", descricaoEstabelecimento=" + descricaoEstabelecimento + ", urlLogo=" + urlLogo
+				+ ", site=" + site + ", facebook=" + facebook + ", twitter=" + twitter + ", youtube=" + youtube + ", horarioFuncionamento="
+				+ horarioFuncionamento + ", telefone=" + telefone + ", classificacaoEtaria=" + classificacaoEtaria + ", evento=" + evento
+				+ ", publico=" + publico + ", decoracao=" + decoracao + ", ambiente=" + ambiente + ", delivery=" + delivery + ", estacionamento="
+				+ estacionamento + ", wifi=" + wifi + ", musica=" + musica + ", categoria=" + categoria + ", endereco=" + endereco
+				+ ", qtdAvaliacoes=" + qtdAvaliacoes + ", promocoes=" + promocoes + "]";
 	}
 
 }

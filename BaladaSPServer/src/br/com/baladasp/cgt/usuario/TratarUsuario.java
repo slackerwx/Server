@@ -1,21 +1,18 @@
 package br.com.baladasp.cgt.usuario;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Ranking;
 import br.com.baladasp.cdp.usuario.ConstantesUsuario;
 import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgt.bo.AtividadesUsuarioBO;
+import br.com.baladasp.cgt.bo.RankingBO;
 import br.com.baladasp.cgt.bo.StatusUsuariosBO;
 import br.com.baladasp.cgt.bo.UsuarioBO;
-import br.com.baladasp.cgt.server.OperacoesEstabelecimento;
-import br.com.baladasp.cgt.util.json.deserializer.AtividadeUsuarioDeserializer;
-import br.com.baladasp.cgt.util.json.deserializer.EstabelecimentoDeserializer;
-import br.com.baladasp.cgt.util.json.serializer.AvaliacaoSerializer;
 import br.com.baladasp.cgt.util.json.serializer.EstabelecimentosSerializer;
-import br.com.baladasp.util.Utils;
+import br.com.baladasp.cgt.util.json.serializer.StatusUsuariosSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,21 +24,26 @@ import com.google.gson.GsonBuilder;
  * jsonString[1] = Tipo de operacao
  * jsonString[2] = Objeto
  */
-public class TratarUsuario extends OperacoesEstabelecimento {
+public class TratarUsuario{
 
-	private Gson gsonUtils = new GsonBuilder().registerTypeAdapter(AtividadeUsuario.class, new AtividadeUsuarioDeserializer())
-												.registerTypeAdapter(Avaliacao.class, new AvaliacaoSerializer())
-												.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-												.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoDeserializer())
-												.setPrettyPrinting()
-												.create();
+	private Gson gsonEstabelecimentosSerializer = new GsonBuilder()
+													.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
+													.excludeFieldsWithoutExposeAnnotation()
+													.setPrettyPrinting()
+													.create();
+	
+	private static Gson gsonStatusUsuarioSerializer = new GsonBuilder()
+													.registerTypeAdapter(ArrayList.class, new StatusUsuariosSerializer())
+													.excludeFieldsWithoutExposeAnnotation()
+													.setPrettyPrinting()
+													.create();
 
 	public Object operacoes(String[] receivedJsonString) {
-		final String operacao = gsonUtils.fromJson(receivedJsonString[1], String.class);
+		final String operacao = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[1], String.class);
 
 		if (operacao.equalsIgnoreCase(ConstantesUsuario.VERIFICACAO)) {
 			System.out.println(ConstantesUsuario.VERIFICACAO);
-			return TratarConsultaAvaliacaoCheckin.verificarSeUsuarioJaAvaliouEstabelecimento(gsonUtils, receivedJsonString);
+			return TratarConsultaAvaliacaoCheckin.verificarSeUsuarioJaAvaliouEstabelecimento(gsonEstabelecimentosSerializer, receivedJsonString);
 		}
 
 		if (operacao.equalsIgnoreCase(ConstantesUsuario.CHECKIN)) {
@@ -71,11 +73,11 @@ public class TratarUsuario extends OperacoesEstabelecimento {
 
 		ArrayList<StatusUsuario> listStatus = statusBO.consultaStatusTimeline();
 
-		return gsonSer.toJson(listStatus);
+		return gsonStatusUsuarioSerializer.toJson(listStatus);
 	}
 
 	private Object tratarPerfil(String[] receivedJsonString) {
-		Usuario usuario = gsonUtils.fromJson(receivedJsonString[2], Usuario.class);
+		Usuario usuario = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], Usuario.class);
 
 		UsuarioBO usuarioBO = new UsuarioBO();
 		Usuario user = usuarioBO.consultarUsuarioIDTwitter(usuario.getIDTwitter());
@@ -87,54 +89,56 @@ public class TratarUsuario extends OperacoesEstabelecimento {
 			usuario = user;
 		}
 
-		return usuario == null ? null : gsonSer.toJson(usuario);
+		return usuario == null ? null : gsonStatusUsuarioSerializer.toJson(usuario);
 	}
 
 	private String tratarCheckin(String[] receivedJsonString) {
-		AtividadeUsuario atividade = gsonUtils.fromJson(receivedJsonString[2], AtividadeUsuario.class);
+		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], AtividadeUsuario.class);
 
 		AtividadesUsuarioBO atividadesUsuarioBO = new AtividadesUsuarioBO();
 		atividadesUsuarioBO.salvarAtividade(atividade);
 
-		return gsonSer.toJson(ConstantesUsuario.MSG_OK_CHECKIN);
+		return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_OK_CHECKIN);
 	}
 
+	//TODO Urgente, preciso dar um jeito de cascatear alteracoes em Ranking
 	private Object tratarAvaliacao(String[] receivedJsonString) {
-		AtividadeUsuario atividade = gsonUtils.fromJson(receivedJsonString[2], AtividadeUsuario.class);
+		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], AtividadeUsuario.class);
 
 		final OperacaoAtividadeUsuario operacao = atividade.getTipoAtividade();
 		final Estabelecimento estabelecimento = operacao.getEstabelecimento();
 
 		if (operacao instanceof Avaliacao) {
 			Avaliacao avaliacao = (Avaliacao) operacao;
-			Ranking ranking = estabelecimento.getRanking();
+		
+			RankingBO rankingBO = new RankingBO();
+			Ranking ranking = rankingBO.consultarRanking(estabelecimento);
+			
 			estabelecimento.aumentarQtdAvaliacoes();
 			if (ranking != null) {
-				final float novaMediaRanking = calculaMediaRanking(estabelecimento, avaliacao, ranking);
+				final float novaMediaRanking = calculaMediaRanking(avaliacao, ranking);
 				ranking.setMediaAvaliacoes(novaMediaRanking);
 
-				final float pontuacaoRankingAtual = estabelecimento.getRanking().getPontos();
+				final float pontuacaoRankingAtual = ranking.getPontos();
 				final float novaPontuacao = pontuacaoRankingAtual + avaliacao.getTotaldePontos();
 				ranking.setPontos(novaPontuacao);
 
-				// TODO fiz isso em EstabelecimentoDeserializer mas nao sei se foi a melhor escolha
-				// ranking.setEstabelecimento(estabelecimento);
+				 ranking.setEstabelecimento(estabelecimento);
 			} else {
 				ranking = new Ranking(estabelecimento, avaliacao.getMediaAvaliacao(), avaliacao.getTotaldePontos());
-				estabelecimento.setRanking(ranking);
 			}
-
 			AtividadesUsuarioBO atividadesUsuarioBO = new AtividadesUsuarioBO();
 			atividadesUsuarioBO.salvarAtividade(atividade);
 
-			return gsonSer.toJson(ConstantesUsuario.MSG_OK_AVALIADO);
+			return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_OK_AVALIADO);
 		}
 
 		return null;
 	}
 
-	private float calculaMediaRanking(final Estabelecimento estabelecimento, Avaliacao avaliacao, Ranking ranking) {
-		final float mediaRankingAtual = estabelecimento.getRanking().getMediaAvaliacoes();
+	private float calculaMediaRanking(Avaliacao avaliacao, Ranking ranking) {
+		final Estabelecimento estabelecimento = ranking.getEstabelecimento();
+		final float mediaRankingAtual = ranking.getMediaAvaliacoes();
 
 		final float mediaAvaliacao = avaliacao.getMediaAvaliacao();
 		float novaMediaRanking = mediaRankingAtual;
@@ -161,10 +165,10 @@ public class TratarUsuario extends OperacoesEstabelecimento {
 
 					if (estabelecimentoAvaliado.equals(nomeEstabelecimentoConsulta)) {
 						if (foiAvaliadoHoje(ultimaAtividade))
-							return gsonSer.toJson(ConstantesUsuario.MSG_JA_AVALIADO);
+							return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_JA_AVALIADO);
 					}
 				}
-				return gsonSer.toJson(ConstantesUsuario.MSG_NAO_AVALIADO);
+				return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_NAO_AVALIADO);
 			}
 			return null;
 		}
@@ -173,25 +177,18 @@ public class TratarUsuario extends OperacoesEstabelecimento {
 		 * Formato de entrada de data esperado 31/12/13 13:39
 		 */
 		private static boolean foiAvaliadoHoje(AtividadeUsuario atividade) {
-			String dataAtividade = atividade.getDataAtividade();
-
-			String[] infoAvaliado = dataAtividade.split(" ");
-			String[] dataAvaliado = infoAvaliado[0].split("/");
-			String[] horarioAvaliado = infoAvaliado[1].split(":");
-
-			String[] infoAtual = Utils.formatarData(new Date()).split(" ");
-			String[] dataAtual = infoAtual[0].split("/");
-			String[] horarioAtual = infoAtual[1].split(":");
-
-			int horaAvaliado = Integer.valueOf(horarioAvaliado[0]);
-			int diaAvaliado = Integer.valueOf(dataAvaliado[0]);
-			int mesAvaliado = Integer.valueOf(dataAvaliado[1]);
-			int anoAvaliado = Integer.valueOf(dataAvaliado[2]);
-
-			int horaAtual = Integer.valueOf(horarioAtual[0]);
-			int diaAtual = Integer.valueOf(dataAtual[0]);
-			int mesAtual = Integer.valueOf(dataAtual[1]);
-			int anoAtual = Integer.valueOf(dataAtual[2]);
+			
+			Calendar dataAtividade = atividade.getDataAtividade();
+			int horaAvaliado = dataAtividade.get(Calendar.HOUR_OF_DAY);
+			int diaAvaliado = dataAtividade.get(Calendar.DAY_OF_MONTH);
+			int mesAvaliado = dataAtividade.get(Calendar.MONTH)+1;
+			int anoAvaliado = dataAtividade.get(Calendar.YEAR);
+			
+			Calendar dataAtual = Calendar.getInstance();
+			int horaAtual = dataAtual.get(Calendar.HOUR_OF_DAY);
+			int diaAtual = dataAtual.get(Calendar.DAY_OF_MONTH);
+			int mesAtual = dataAtual.get(Calendar.MONTH)+1;
+			int anoAtual = dataAtual.get(Calendar.YEAR);
 
 			int difHora = horaAvaliado - horaAtual;
 			int difDia = diaAvaliado - diaAtual;

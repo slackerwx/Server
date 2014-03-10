@@ -1,6 +1,5 @@
 package br.com.baladasp.cgt.server;
 
-
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -12,9 +11,7 @@ import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Ranking;
 import br.com.baladasp.cgt.bo.EstabelecimentoBO;
 import br.com.baladasp.cgt.bo.RankingBO;
-import br.com.baladasp.cgt.util.json.serializer.EstabelecimentoSerializer;
 import br.com.baladasp.cgt.util.json.serializer.EstabelecimentosSerializer;
-import br.com.baladasp.cgt.util.json.serializer.RankingSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,27 +22,37 @@ import com.google.gson.GsonBuilder;
  * jsonString[2] = Argumento
  */
 public class TratarEstabelecimento {
-	private Gson gsonSer = new GsonBuilder().registerTypeAdapter(Estabelecimento.class, new EstabelecimentoSerializer())
-						.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-						.registerTypeAdapter(Ranking.class, new RankingSerializer())
-						.setPrettyPrinting()
-						.create();
+	private Gson gsonSer = new GsonBuilder()//.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoSerializer())
+											.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
+											//.registerTypeAdapter(Ranking.class, new RankingSerializer())
+											.excludeFieldsWithoutExposeAnnotation()
+											.setPrettyPrinting()
+											.create();
 
 	public Object operacoes(String[] receivedJsonString) throws UnsupportedEncodingException {
 		Gson gsonUtils = new Gson();
-		final String operacao = gsonUtils.fromJson(receivedJsonString[1], String.class);
+		final EnumEstabelecimento operacao = (EnumEstabelecimento) gsonUtils.fromJson(receivedJsonString[1], EnumEstabelecimento.class);
 		final String argumento = gsonUtils.fromJson(receivedJsonString[2], String.class);
 
 		String jsonEstabs = "";
 
-		if (operacao.equalsIgnoreCase(EnumEstabelecimento.TOPDEZ.toString())) {
+		switch (operacao) {
+		case TOPDEZ:
 			jsonEstabs = buscarTopDez(argumento);
-		}
+			break;
 
-		if (operacao.equalsIgnoreCase(EnumEstabelecimento.PESQUISA.toString())) {
-			//Pagina��o
+		case PESQUISA:
+			// Paginao
 			int pageNum = gsonUtils.fromJson(receivedJsonString[3], Integer.class);
 			jsonEstabs = buscaPorNome(argumento, pageNum);
+			break;
+		case BUSCAR_AVALIACOES:
+			// Paginao
+			int page = gsonUtils.fromJson(receivedJsonString[3], Integer.class);
+			jsonEstabs = buscaPorNome(argumento, page);
+			break;
+		default:
+			break;
 		}
 
 		return jsonEstabs;
@@ -54,6 +61,9 @@ public class TratarEstabelecimento {
 	// ==================================================================================
 	// =================================Top 10===========================================
 	// ==================================================================================
+	/*
+	 * TODO Refatorar, de agora em diante vai retornar ArrayList<Ranking>
+	 */
 	private String buscarTopDez(final String argumento) {
 		final String categoriaEstabelecimento = argumento;
 
@@ -63,7 +73,7 @@ public class TratarEstabelecimento {
 		if (rankList.size() != 0) {
 			for (Ranking ranking : rankList) {
 				Estabelecimento estabelecimento = ranking.getEstabelecimento();
-				estabelecimento.setRanking(ranking);
+				//estabelecimento.setRanking(ranking);
 
 				setEstabelecimentos.add(estabelecimento);
 			}
@@ -82,8 +92,7 @@ public class TratarEstabelecimento {
 
 	private void completarLista(final String categoriaEstabelecimento, Set<Estabelecimento> setEstabelecimentos) {
 		Categoria categoria = new Categoria(categoriaEstabelecimento);
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) new EstabelecimentoBO()
-				.consultarCategorias(categoria);
+		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) new EstabelecimentoBO().consultarCategorias(categoria);
 
 		for (Estabelecimento estabelecimento : estabelecimentos) {
 			if (setEstabelecimentos.size() < 10) {

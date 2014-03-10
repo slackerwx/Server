@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "tb_regiao")
 public class Regiao {
@@ -13,8 +15,8 @@ public class Regiao {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_regiao")
-	private long id;
-	private String regiao;
+	@Expose private long id;
+	@Expose private String regiao;
 
 	public Regiao() {
 

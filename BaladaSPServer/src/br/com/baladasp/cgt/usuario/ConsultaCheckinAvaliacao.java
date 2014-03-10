@@ -1,11 +1,13 @@
 package br.com.baladasp.cgt.usuario;
 
+import com.google.gson.annotations.Expose;
+
 import br.com.baladasp.cdp.usuario.Usuario;
 
 public class ConsultaCheckinAvaliacao {
 
-	private String nomeEstabelecimento;
-	private Usuario usuarioTwitter;
+	@Expose private String nomeEstabelecimento;
+	@Expose private Usuario usuarioTwitter;
 
 	public ConsultaCheckinAvaliacao(Usuario usuarioTwitter, String nomeEstabelecimento) {
 		super();
