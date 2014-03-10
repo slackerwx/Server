@@ -37,10 +37,10 @@ public class TratarEstabelecimentoTest extends TestCase implements Tratamento {
 		String jsonSerialized = criarJson(object);
 		assertNotNull(jsonSerialized);
 
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento
-				.deserializar(jsonSerialized, ArrayList.class);
+		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento.deserializar(
+				jsonSerialized, ArrayList.class);
 		assertNotNull(estabelecimentos);
-		
+
 		imprimirEstabelecimentos(estabelecimentos);
 	}
 
@@ -55,10 +55,11 @@ public class TratarEstabelecimentoTest extends TestCase implements Tratamento {
 		String jsonSerialized = criarJson(operacao(sendJson));
 		assertNotNull(jsonSerialized);
 
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento
-				.deserializar(jsonSerialized, ArrayList.class);
+		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento.deserializar(
+				jsonSerialized, ArrayList.class);
+
 		assertNotNull(estabelecimentos);
-		
+
 		imprimirEstabelecimentos(estabelecimentos);
 	}
 
@@ -67,7 +68,7 @@ public class TratarEstabelecimentoTest extends TestCase implements Tratamento {
 			System.out.println(estabelecimento);
 		}
 	}
-	
+
 	@Override
 	public String criarJson(Object object) {
 		String jsonSerialized = (String) object;

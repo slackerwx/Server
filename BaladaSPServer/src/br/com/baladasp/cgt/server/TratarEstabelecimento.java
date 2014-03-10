@@ -22,16 +22,15 @@ import com.google.gson.GsonBuilder;
  * jsonString[2] = Argumento
  */
 public class TratarEstabelecimento {
-	private Gson gsonSer = new GsonBuilder()//.registerTypeAdapter(Estabelecimento.class, new EstabelecimentoSerializer())
-											.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-											//.registerTypeAdapter(Ranking.class, new RankingSerializer())
-											.excludeFieldsWithoutExposeAnnotation()
-											.setPrettyPrinting()
-											.create();
+	private Gson gsonSer = new GsonBuilder().registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
+			.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
 	public Object operacoes(String[] receivedJsonString) throws UnsupportedEncodingException {
 		Gson gsonUtils = new Gson();
-		final EnumEstabelecimento operacao = (EnumEstabelecimento) gsonUtils.fromJson(receivedJsonString[1], EnumEstabelecimento.class);
+		
+		final EnumEstabelecimento operacao = (EnumEstabelecimento) gsonUtils.fromJson(receivedJsonString[1],
+				EnumEstabelecimento.class);
+		
 		final String argumento = gsonUtils.fromJson(receivedJsonString[2], String.class);
 
 		String jsonEstabs = "";
@@ -42,7 +41,7 @@ public class TratarEstabelecimento {
 			break;
 
 		case PESQUISA:
-			// Paginao
+			// Paginacao
 			int pageNum = gsonUtils.fromJson(receivedJsonString[3], Integer.class);
 			jsonEstabs = buscaPorNome(argumento, pageNum);
 			break;
@@ -73,7 +72,7 @@ public class TratarEstabelecimento {
 		if (rankList.size() != 0) {
 			for (Ranking ranking : rankList) {
 				Estabelecimento estabelecimento = ranking.getEstabelecimento();
-				//estabelecimento.setRanking(ranking);
+				// estabelecimento.setRanking(ranking);
 
 				setEstabelecimentos.add(estabelecimento);
 			}
@@ -92,7 +91,8 @@ public class TratarEstabelecimento {
 
 	private void completarLista(final String categoriaEstabelecimento, Set<Estabelecimento> setEstabelecimentos) {
 		Categoria categoria = new Categoria(categoriaEstabelecimento);
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) new EstabelecimentoBO().consultarCategorias(categoria);
+		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) new EstabelecimentoBO()
+				.consultarCategorias(categoria);
 
 		for (Estabelecimento estabelecimento : estabelecimentos) {
 			if (setEstabelecimentos.size() < 10) {
@@ -113,7 +113,8 @@ public class TratarEstabelecimento {
 			final String nomeEstab = argumento;
 			System.out.println("PAGE " + pageNum);
 
-			lstEstabs = (ArrayList<Estabelecimento>) new EstabelecimentoBO().consultarEstabelecimentos(nomeEstab, pageNum);
+			lstEstabs = (ArrayList<Estabelecimento>) new EstabelecimentoBO().consultarEstabelecimentos(nomeEstab,
+					pageNum);
 
 			System.out.println("Busca por nome: " + lstEstabs.size());
 		}

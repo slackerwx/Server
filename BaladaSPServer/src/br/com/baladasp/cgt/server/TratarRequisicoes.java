@@ -32,13 +32,11 @@ public class TratarRequisicoes implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	/*
-	 * jsonString[0] = Tipo de objeto 
-	 * jsonString[1] = Tipo de operacao 
-	 * jsonString[2] = Argumento
+	 * jsonString[0] = Tipo de objeto jsonString[1] = Tipo de operacao jsonString[2] = Argumento
 	 */
 	@Override
 	public void run() {

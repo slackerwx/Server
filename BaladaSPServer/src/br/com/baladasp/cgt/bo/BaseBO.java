@@ -19,8 +19,7 @@ public class BaseBO<T> {
 		this.dao = new BaseDAO<T>(clazz);
 	}
 
-	public BaseBO(SessionFactory sessionFactory,
-			@SuppressWarnings("rawtypes") Class clazz) {
+	public BaseBO(SessionFactory sessionFactory, @SuppressWarnings("rawtypes") Class clazz) {
 		this.sessionFactory = sessionFactory;
 		this.dao = new BaseDAO<T>(clazz);
 	}

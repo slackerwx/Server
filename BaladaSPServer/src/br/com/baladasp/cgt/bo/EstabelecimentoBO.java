@@ -10,7 +10,7 @@ import br.com.baladasp.cgd.dao.EstabelecimentoDAO;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EstabelecimentoBO extends AbstractCRUD {
-	
+
 	EstabelecimentoDAO estabDAO;
 
 	public EstabelecimentoBO() {
@@ -30,7 +30,7 @@ public class EstabelecimentoBO extends AbstractCRUD {
 		return (Estabelecimento) findByID(id);
 	}
 
-	//TODO Pensar num jeito de arrumar essa consulta
+	// TODO Pensar num jeito de arrumar essa consulta
 	public List<Estabelecimento> consultarEstabelecimentos(String nome, int pageNum) {
 		List<Estabelecimento> ListEstab = null;
 

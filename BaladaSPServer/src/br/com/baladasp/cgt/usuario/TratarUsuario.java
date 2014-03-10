@@ -29,26 +29,23 @@ import com.google.gson.GsonBuilder;
  * jsonString[1] = Tipo de operacao
  * jsonString[2] = Objeto
  */
-public class TratarUsuario{
+public class TratarUsuario {
 
 	private Gson gsonEstabelecimentosSerializer = new GsonBuilder()
-													.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
-													.excludeFieldsWithoutExposeAnnotation()
-													.setPrettyPrinting()
-													.create();
-	
+			.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
+			.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+
 	private static Gson gsonStatusUsuarioSerializer = new GsonBuilder()
-													.registerTypeAdapter(ArrayList.class, new StatusUsuariosSerializer())
-													.excludeFieldsWithoutExposeAnnotation()
-													.setPrettyPrinting()
-													.create();
+			.registerTypeAdapter(ArrayList.class, new StatusUsuariosSerializer())
+			.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
 	public Object operacoes(String[] receivedJsonString) {
 		final String operacao = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[1], String.class);
 
 		if (operacao.equalsIgnoreCase(ConstantesUsuario.VERIFICACAO)) {
 			System.out.println(ConstantesUsuario.VERIFICACAO);
-			return TratarConsultaAvaliacaoCheckin.verificarSeUsuarioJaAvaliouEstabelecimento(gsonEstabelecimentosSerializer, receivedJsonString);
+			return TratarConsultaAvaliacaoCheckin.verificarSeUsuarioJaAvaliouEstabelecimento(
+					gsonEstabelecimentosSerializer, receivedJsonString);
 		}
 
 		if (operacao.equalsIgnoreCase(ConstantesUsuario.CHECKIN)) {
@@ -98,7 +95,8 @@ public class TratarUsuario{
 	}
 
 	private String tratarCheckin(String[] receivedJsonString) {
-		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], AtividadeUsuario.class);
+		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2],
+				AtividadeUsuario.class);
 
 		AtividadesUsuarioBO atividadesUsuarioBO = new AtividadesUsuarioBO();
 		atividadesUsuarioBO.salvarAtividade(atividade);
@@ -106,19 +104,20 @@ public class TratarUsuario{
 		return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_OK_CHECKIN);
 	}
 
-	//TODO Urgente, preciso dar um jeito de cascatear alteracoes em Ranking
+	// TODO Urgente, preciso dar um jeito de cascatear alteracoes em Ranking
 	private Object tratarAvaliacao(String[] receivedJsonString) {
-		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], AtividadeUsuario.class);
+		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2],
+				AtividadeUsuario.class);
 
 		final OperacaoAtividadeUsuario operacao = atividade.getTipoAtividade();
 		final Estabelecimento estabelecimento = operacao.getEstabelecimento();
 
 		if (operacao instanceof Avaliacao) {
 			Avaliacao avaliacao = (Avaliacao) operacao;
-		
+
 			RankingBO rankingBO = new RankingBO();
 			Ranking ranking = rankingBO.consultarRanking(estabelecimento);
-			
+
 			estabelecimento.aumentarQtdAvaliacoes();
 			if (ranking != null) {
 				final float novaMediaRanking = calculaMediaRanking(avaliacao, ranking);
@@ -128,7 +127,7 @@ public class TratarUsuario{
 				final float novaPontuacao = pontuacaoRankingAtual + avaliacao.getTotaldePontos();
 				ranking.setPontos(novaPontuacao);
 
-				 ranking.setEstabelecimento(estabelecimento);
+				ranking.setEstabelecimento(estabelecimento);
 			} else {
 				ranking = new Ranking(estabelecimento, avaliacao.getMediaAvaliacao(), avaliacao.getTotaldePontos());
 			}
@@ -148,7 +147,8 @@ public class TratarUsuario{
 		final float mediaAvaliacao = avaliacao.getMediaAvaliacao();
 		float novaMediaRanking = mediaRankingAtual;
 		if (mediaAvaliacao != mediaRankingAtual) {
-			novaMediaRanking = ((mediaAvaliacao - mediaRankingAtual) / (estabelecimento.getQtdAvaliacoes() + 1)) + mediaRankingAtual;
+			novaMediaRanking = ((mediaAvaliacao - mediaRankingAtual) / (estabelecimento.getQtdAvaliacoes() + 1))
+					+ mediaRankingAtual;
 		}
 		return novaMediaRanking;
 	}
@@ -156,17 +156,20 @@ public class TratarUsuario{
 	private static class TratarConsultaAvaliacaoCheckin {
 
 		private static String verificarSeUsuarioJaAvaliouEstabelecimento(Gson gsonUtils, String[] receivedJsonString) {
-			final ConsultaCheckinAvaliacao consulta = gsonUtils.fromJson(receivedJsonString[2], ConsultaCheckinAvaliacao.class);
+			final ConsultaCheckinAvaliacao consulta = gsonUtils.fromJson(receivedJsonString[2],
+					ConsultaCheckinAvaliacao.class);
 
 			final String nomeEstabelecimentoConsulta = consulta.getNomeEstabelecimento();
 			final Usuario usuario = consulta.getUsuarioTwitter();
 
 			if (usuario != null) {
 				AtividadesUsuarioBO ativUserBO = new AtividadesUsuarioBO();
-				ArrayList<AtividadeUsuario> dezUltimasAtividadesUsuario = ativUserBO.consultarDezUltimasAtividadesUsuario(usuario);
+				ArrayList<AtividadeUsuario> dezUltimasAtividadesUsuario = ativUserBO
+						.consultarDezUltimasAtividadesUsuario(usuario);
 
 				for (AtividadeUsuario ultimaAtividade : dezUltimasAtividadesUsuario) {
-					String estabelecimentoAvaliado = ((OperacaoAtividadeUsuario) ultimaAtividade.getTipoAtividade()).getEstabelecimento().getNome();
+					String estabelecimentoAvaliado = ((OperacaoAtividadeUsuario) ultimaAtividade.getTipoAtividade())
+							.getEstabelecimento().getNome();
 
 					if (estabelecimentoAvaliado.equals(nomeEstabelecimentoConsulta)) {
 						if (foiAvaliadoHoje(ultimaAtividade))
@@ -182,17 +185,17 @@ public class TratarUsuario{
 		 * Formato de entrada de data esperado 31/12/13 13:39
 		 */
 		private static boolean foiAvaliadoHoje(AtividadeUsuario atividade) {
-			
+
 			Calendar dataAtividade = atividade.getDataAtividade();
 			int horaAvaliado = dataAtividade.get(Calendar.HOUR_OF_DAY);
 			int diaAvaliado = dataAtividade.get(Calendar.DAY_OF_MONTH);
-			int mesAvaliado = dataAtividade.get(Calendar.MONTH)+1;
+			int mesAvaliado = dataAtividade.get(Calendar.MONTH) + 1;
 			int anoAvaliado = dataAtividade.get(Calendar.YEAR);
-			
+
 			Calendar dataAtual = Calendar.getInstance();
 			int horaAtual = dataAtual.get(Calendar.HOUR_OF_DAY);
 			int diaAtual = dataAtual.get(Calendar.DAY_OF_MONTH);
-			int mesAtual = dataAtual.get(Calendar.MONTH)+1;
+			int mesAtual = dataAtual.get(Calendar.MONTH) + 1;
 			int anoAtual = dataAtual.get(Calendar.YEAR);
 
 			int difHora = horaAvaliado - horaAtual;
@@ -206,7 +209,8 @@ public class TratarUsuario{
 			/*
 			 * Se nao tiver pelo menos 12 horas de diferença
 			 */
-			if ((difDia == 0 && difMes == 0 && difAno == 0) || (difDia == 0 && (Math.abs(difHora) < 12)) || (difDia == 1 && difHora > 11)) {
+			if ((difDia == 0 && difMes == 0 && difAno == 0) || (difDia == 0 && (Math.abs(difHora) < 12))
+					|| (difDia == 1 && difHora > 11)) {
 				return true;
 			}
 

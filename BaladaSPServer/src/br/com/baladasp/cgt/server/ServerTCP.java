@@ -13,7 +13,7 @@ public class ServerTCP implements Runnable {
 	public ServerTCP(int port) {
 		this.port = port;
 		init();
-	} 
+	}
 
 	private void init() {
 		try {
@@ -39,7 +39,7 @@ public class ServerTCP implements Runnable {
 						Thread thread = new Thread(requisicao);
 						thread.start();
 					}
-				}catch (IOException e) {
+				} catch (IOException e) {
 					e.printStackTrace();
 					close();
 					connected = false;
