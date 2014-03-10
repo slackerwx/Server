@@ -5,7 +5,12 @@ import java.util.Calendar;
 
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Ranking;
+import br.com.baladasp.cdp.usuario.AtividadeUsuario;
+import br.com.baladasp.cdp.usuario.Avaliacao;
 import br.com.baladasp.cdp.usuario.ConstantesUsuario;
+import br.com.baladasp.cdp.usuario.ConsultaCheckinAvaliacao;
+import br.com.baladasp.cdp.usuario.OperacaoAtividadeUsuario;
+import br.com.baladasp.cdp.usuario.StatusUsuario;
 import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgt.bo.AtividadesUsuarioBO;
 import br.com.baladasp.cgt.bo.RankingBO;

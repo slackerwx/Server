@@ -9,15 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
+import br.com.baladasp.cdp.usuario.AtividadeUsuario;
+import br.com.baladasp.cdp.usuario.Avaliacao;
+import br.com.baladasp.cdp.usuario.Checkin;
 import br.com.baladasp.cdp.usuario.ConstantesUsuario;
+import br.com.baladasp.cdp.usuario.ConsultaCheckinAvaliacao;
+import br.com.baladasp.cdp.usuario.StatusUsuario;
 import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgt.bo.EstabelecimentoBO;
 import br.com.baladasp.cgt.bo.UsuarioBO;
-import br.com.baladasp.cgt.usuario.AtividadeUsuario;
-import br.com.baladasp.cgt.usuario.Avaliacao;
-import br.com.baladasp.cgt.usuario.Checkin;
-import br.com.baladasp.cgt.usuario.ConsultaCheckinAvaliacao;
-import br.com.baladasp.cgt.usuario.StatusUsuario;
 import br.com.baladasp.cgt.usuario.TratarUsuario;
 import br.com.baladasp.util.JsonUsuario;
 

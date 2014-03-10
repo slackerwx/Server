@@ -10,7 +10,7 @@ import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 public class EstabelecimentoDAO extends BaseDAO<Estabelecimento> {
 
 	/*
-	 * Nao sei se é a melhor opção usar SQL nativo, mas foi a que funcionou
+	 * TODO refatorar essa classe assim que poss�vel.
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Estabelecimento> selectByName(String nameExcerpt, int pageNum) throws DAOException {

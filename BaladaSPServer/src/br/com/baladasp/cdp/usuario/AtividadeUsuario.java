@@ -1,4 +1,4 @@
-package br.com.baladasp.cgt.usuario;
+package br.com.baladasp.cdp.usuario;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-import br.com.baladasp.cdp.usuario.Usuario;
 
 import com.google.gson.annotations.Expose;
 

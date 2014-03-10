@@ -34,14 +34,14 @@ public class TratarEstabelecimentoTest extends TestCase implements Tratamento {
 		sendJson = jsonEstabelecimento.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, categoriaTopDez);
 
 		Object object = operacao(sendJson);
-		//String jsonSerialized = criarJson(object);
-		//assertNotNull(jsonSerialized);
+		String jsonSerialized = criarJson(object);
+		assertNotNull(jsonSerialized);
 
-//		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento
-//				.deserializar(jsonSerialized, ArrayList.class);
-//		assertNotNull(estabelecimentos);
-//		
-//		imprimirEstabelecimentos(estabelecimentos);
+		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento
+				.deserializar(jsonSerialized, ArrayList.class);
+		assertNotNull(estabelecimentos);
+		
+		imprimirEstabelecimentos(estabelecimentos);
 	}
 
 	@SuppressWarnings("unchecked")

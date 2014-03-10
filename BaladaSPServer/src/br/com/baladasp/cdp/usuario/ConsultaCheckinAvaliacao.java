@@ -1,8 +1,7 @@
-package br.com.baladasp.cgt.usuario;
+package br.com.baladasp.cdp.usuario;
 
 import com.google.gson.annotations.Expose;
 
-import br.com.baladasp.cdp.usuario.Usuario;
 
 public class ConsultaCheckinAvaliacao {
 

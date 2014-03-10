@@ -39,6 +39,12 @@
 
 		<!-- Mapeamento das classes -->
 		<mapping class="br.com.baladasp.cdp.usuario.Usuario" />
+		<mapping class="br.com.baladasp.cdp.usuario.StatusUsuario" />
+		<mapping class="br.com.baladasp.cdp.usuario.AtividadeUsuario" />
+		<mapping class="br.com.baladasp.cdp.usuario.Checkin" />
+		<mapping class="br.com.baladasp.cdp.usuario.Avaliacao" />
+		<mapping class="br.com.baladasp.cdp.usuario.OperacaoAtividadeUsuario" />
+		
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Estabelecimento" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Promocao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Endereco" />
@@ -47,11 +53,7 @@
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Regiao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Musica" />
 
-		<mapping class="br.com.baladasp.cgt.usuario.StatusUsuario" />
-		<mapping class="br.com.baladasp.cgt.usuario.AtividadeUsuario" />
-		<mapping class="br.com.baladasp.cgt.usuario.Checkin" />
-		<mapping class="br.com.baladasp.cgt.usuario.Avaliacao" />
-		<mapping class="br.com.baladasp.cgt.usuario.OperacaoAtividadeUsuario" />
+		
 	</session-factory>
 
 </hibernate-configuration>

@@ -2,8 +2,8 @@ package br.com.baladasp.cgt.bo;
 
 import java.util.ArrayList;
 
+import br.com.baladasp.cdp.usuario.StatusUsuario;
 import br.com.baladasp.cgd.dao.AbstractSelectDAO;
-import br.com.baladasp.cgt.usuario.StatusUsuario;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class StatusUsuariosBO extends AbstractCRUD {

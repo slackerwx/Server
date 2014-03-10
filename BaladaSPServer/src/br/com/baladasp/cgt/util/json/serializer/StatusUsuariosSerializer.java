@@ -3,7 +3,7 @@ package br.com.baladasp.cgt.util.json.serializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import br.com.baladasp.cgt.usuario.StatusUsuario;
+import br.com.baladasp.cdp.usuario.StatusUsuario;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

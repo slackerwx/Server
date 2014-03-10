@@ -1,4 +1,4 @@
-package br.com.baladasp.cgt.usuario;
+package br.com.baladasp.cdp.usuario;
 
 import java.util.Calendar;
 
