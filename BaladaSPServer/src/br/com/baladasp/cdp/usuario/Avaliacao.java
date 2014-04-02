@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
@@ -37,6 +38,9 @@ public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable 
 	@Expose private float mediaAvaliacao;
 	@Expose private float totalDePontos;
 
+	@OneToOne
+	@Expose private Usuario usuario;
+	
 	public Avaliacao() {
 
 	}
@@ -134,6 +138,14 @@ public class Avaliacao extends OperacaoAtividadeUsuario implements Serializable 
 
 	public float getMediaAvaliacao() {
 		return mediaAvaliacao;
+	}
+	
+	public void setUsuario(Usuario usuario){
+		this.usuario = usuario;
+	}
+	
+	public Usuario getUsuario(){
+		return usuario;
 	}
 
 	@Override

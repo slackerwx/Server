@@ -27,7 +27,7 @@ public class UsuarioBO extends AbstractCRUD {
 		String namedQuery = "Usuario.findByIDTwitter";
 		return (Usuario) findByParameterUniqueResult(namedQuery, id);
 	}
-
+	
 	public void excluirUsuario(Usuario usuario) {
 		delete(usuario);
 	}

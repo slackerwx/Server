@@ -16,10 +16,10 @@
 		<!-- JDBC connection pool (use the built-in) -->
 		<property name="connection.pool_size">5</property>
 
-		
+
 		<!-- !!! adicionar c3p0 -->
-		
-		
+
+
 		<!-- SQL dialect -->
 		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 
@@ -31,7 +31,7 @@
 		<property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
+		<!-- <property name="show_sql">true</property> -->
 		<!-- <property name="format_sql">true</property> -->
 
 		<!-- Drop and re-create the database schema on startup -->
@@ -44,7 +44,7 @@
 		<mapping class="br.com.baladasp.cdp.usuario.Checkin" />
 		<mapping class="br.com.baladasp.cdp.usuario.Avaliacao" />
 		<mapping class="br.com.baladasp.cdp.usuario.OperacaoAtividadeUsuario" />
-		
+
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Estabelecimento" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Promocao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Endereco" />
@@ -53,7 +53,7 @@
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Regiao" />
 		<mapping class="br.com.baladasp.cdp.estabelecimento.Musica" />
 
-		
+
 	</session-factory>
 
 </hibernate-configuration>

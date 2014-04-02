@@ -8,65 +8,118 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import br.com.baladasp.cdp.constantes.EnumCategoriasTopDez;
-import br.com.baladasp.cdp.constantes.EnumEstabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
-import br.com.baladasp.cgt.server.TratarEstabelecimento;
-import br.com.baladasp.util.JsonEstabelecimento;
+import br.com.baladasp.cdp.estabelecimento.Ranking;
+import br.com.baladasp.cdp.usuario.Avaliacao;
+import br.com.baladasp.cgt.service.estabelecimento.EstabelecimentoServiceEnum;
+import br.com.baladasp.cgt.service.estabelecimento.TratarEstabelecimentoImpl;
+import br.com.baladasp.util.json.JsonAvaliacoes;
+import br.com.baladasp.util.json.JsonEstabelecimento;
+import br.com.baladasp.util.json.JsonRanking;
 
 public class TratarEstabelecimentoTest extends TestCase implements Tratamento {
-	private static String TIPO_OBJETO = EnumEstabelecimento.ESTABELECIMENTO.toString();
+	private static String TIPO_OBJETO = EstabelecimentoServiceEnum.ESTABELECIMENTO.toString();
 	private String[] sendJson;
 
-	TratarEstabelecimento tratarEstabelecimento;
+	TratarEstabelecimentoImpl tratarEstabelecimento;
 	private JsonEstabelecimento jsonEstabelecimento;
+	private JsonRanking jsonRanking;
+	private JsonAvaliacoes jsonAvaliacoes;
+	private EstabelecimentoServiceEnum OPERACAO_OBJETO;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		tratarEstabelecimento = new TratarEstabelecimento();
-		jsonEstabelecimento = new JsonEstabelecimento();
+		tratarEstabelecimento = new TratarEstabelecimentoImpl();
+		jsonEstabelecimento = JsonEstabelecimento.getInstance();
+		jsonRanking = JsonRanking.getInstance();
+		jsonAvaliacoes = JsonAvaliacoes.getInstance();
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test
 	public void testBuscarTopDez() {
-		EnumEstabelecimento OPERACAO_OBJETO = EnumEstabelecimento.TOPDEZ;
+		OPERACAO_OBJETO = EstabelecimentoServiceEnum.TOP_DEZ;
 		EnumCategoriasTopDez categoriaTopDez = EnumCategoriasTopDez.BARES;
-		sendJson = jsonEstabelecimento.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, categoriaTopDez);
+		sendJson = jsonEstabelecimento.jsonToStringArray(TIPO_OBJETO, OPERACAO_OBJETO, categoriaTopDez);
 
 		Object object = operacao(sendJson);
 		String jsonSerialized = criarJson(object);
 		assertNotNull(jsonSerialized);
 
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento.deserializar(
-				jsonSerialized, ArrayList.class);
-		assertNotNull(estabelecimentos);
+		ArrayList<Ranking> ranking = (ArrayList<Ranking>) jsonRanking.deserializar(jsonSerialized, ArrayList.class);
+		assertNotNull(ranking);
 
-		imprimirEstabelecimentos(estabelecimentos);
+		imprimirRanking(ranking);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testBuscaPorNome() {
-		String OPERACAO_OBJETO = EnumEstabelecimento.PESQUISA.toString();
+		OPERACAO_OBJETO = EstabelecimentoServiceEnum.PESQUISAR_ESTABELECIMENTO;
 		String nomeEstabelecimento = "Bar";
 		int pagina = 0;
-		sendJson = jsonEstabelecimento.jsonToString(TIPO_OBJETO, OPERACAO_OBJETO, nomeEstabelecimento, pagina);
 
-		String jsonSerialized = criarJson(operacao(sendJson));
-		assertNotNull(jsonSerialized);
+		// Testa 10 páginas de busca
+		for (int i = 0; i < 10; i++) {
+			sendJson = jsonEstabelecimento.jsonToStringArray(TIPO_OBJETO, OPERACAO_OBJETO, nomeEstabelecimento, pagina);
 
-		ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento.deserializar(
-				jsonSerialized, ArrayList.class);
+			String jsonSerialized = criarJson(operacao(sendJson));
+			assertNotNull(jsonSerialized);
 
-		assertNotNull(estabelecimentos);
+			ArrayList<Estabelecimento> estabelecimentos = (ArrayList<Estabelecimento>) jsonEstabelecimento
+					.deserializar(jsonSerialized, ArrayList.class);
+			assertNotNull(estabelecimentos);
 
-		imprimirEstabelecimentos(estabelecimentos);
+			System.out.println("***********Página " + pagina + " ************************");
+			imprimirEstabelecimentos(estabelecimentos);
+
+			pagina++;
+
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test
+	public void testBuscaAvaliacoesEstab() {
+		OPERACAO_OBJETO = EstabelecimentoServiceEnum.AVALIACOES_ESTABELECIMENTO;
+		long idEstab = 5;
+		int pagina = 0;
+
+		// Testa 10 páginas de busca
+		for (int i = 0; i < 10; i++) {
+			sendJson = jsonEstabelecimento.jsonToStringArray(TIPO_OBJETO, OPERACAO_OBJETO, idEstab, pagina);
+
+			String jsonSerialized = criarJson(operacao(sendJson));
+			assertNotNull(jsonSerialized);
+
+			ArrayList<Avaliacao> avaliacoes = (ArrayList<Avaliacao>) jsonAvaliacoes.deserializar(jsonSerialized,
+					ArrayList.class);
+			assertNotNull(avaliacoes);
+
+			System.out.println("***********Página " + pagina + " ************************");
+			imprimirAvaliacoes(avaliacoes);
+
+			pagina++;
+		}
+	}
+
+	private void imprimirAvaliacoes(ArrayList<Avaliacao> avaliacoes) {
+		for (Avaliacao avaliacao : avaliacoes) {
+			System.out.println(avaliacao.getId());
+		}
+		avaliacoes.clear();
+	}
+
+	private void imprimirRanking(ArrayList<Ranking> ranking) {
+		for (Ranking ranking2 : ranking) {
+			System.out.println(ranking2);
+		}
 	}
 
 	private void imprimirEstabelecimentos(ArrayList<Estabelecimento> estabelecimentos) {
 		for (Estabelecimento estabelecimento : estabelecimentos) {
-			System.out.println(estabelecimento);
+			System.out.println(estabelecimento.getId());
 		}
+		estabelecimentos.clear();
 	}
 
 	@Override

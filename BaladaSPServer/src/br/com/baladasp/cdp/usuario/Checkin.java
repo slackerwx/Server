@@ -26,9 +26,7 @@ public class Checkin extends OperacaoAtividadeUsuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Checkin [id=" + id + ", dataCheckin=" + dataAtividade +  ", estabelecimento=" + estabelecimento
-				+ "]";
+		return "Checkin [id=" + id + ", dataCheckin=" + dataAtividade + ", estabelecimento=" + estabelecimento + "]";
 	}
-
 
 }

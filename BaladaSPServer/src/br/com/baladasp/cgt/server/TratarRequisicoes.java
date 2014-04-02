@@ -8,7 +8,9 @@ import java.net.SocketException;
 import java.text.DateFormat;
 import java.util.Calendar;
 
-import br.com.baladasp.cgt.usuario.TratarUsuario;
+import br.com.baladasp.cgt.service.estabelecimento.TratarEstabelecimentoImpl;
+import br.com.baladasp.cgt.service.usuario.TratarUsuario;
+import br.com.baladasp.cgt.service.usuario.TratarUsuarioImpl;
 import br.com.baladasp.util.Console;
 
 import com.google.gson.Gson;
@@ -52,13 +54,13 @@ public class TratarRequisicoes implements Runnable {
 					final String tipoObjetoRecebido = gson.fromJson(jsonStringRecebida[0], String.class);
 
 					if (tipoObjetoRecebido.equalsIgnoreCase("usuario")) {
-						TratarUsuario tratarCliente = new TratarUsuario();
+						TratarUsuario tratarCliente = new TratarUsuarioImpl();
 						Object objt = tratarCliente.operacoes(jsonStringRecebida);
 
 						resposta(objt);
 					}
 					if (tipoObjetoRecebido.equalsIgnoreCase("estabelecimento")) {
-						TratarEstabelecimento tratarEstabelecimento = new TratarEstabelecimento();
+						TratarEstabelecimentoImpl tratarEstabelecimento = new TratarEstabelecimentoImpl();
 						Object objt = tratarEstabelecimento.operacoes(jsonStringRecebida);
 
 						resposta(objt);

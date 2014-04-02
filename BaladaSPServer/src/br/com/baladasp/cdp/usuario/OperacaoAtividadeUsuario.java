@@ -40,6 +40,14 @@ public class OperacaoAtividadeUsuario {
 	public OperacaoAtividadeUsuario(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
 	}
+	
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public Estabelecimento getEstabelecimento() {
 		return estabelecimento;

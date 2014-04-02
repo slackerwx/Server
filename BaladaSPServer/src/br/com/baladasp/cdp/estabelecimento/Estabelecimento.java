@@ -50,6 +50,12 @@ public class Estabelecimento implements Serializable {
 	@Expose	private boolean estacionamento;
 	@Expose	private boolean wifi;
 	@Expose	private int qtdAvaliacoes;
+	
+	//TODO implementar
+	@Expose private float mediaAvaliacoes;
+	
+	//TODO implementar
+	@Expose private int qtdCheckins;
 
 	@OneToOne
 	@Expose	private Musica musica;
@@ -102,6 +108,14 @@ public class Estabelecimento implements Serializable {
 
 	public void aumentarQtdAvaliacoes() {
 		this.qtdAvaliacoes++;
+	}
+	
+	public int getQtdCheckins(){
+		return qtdCheckins;
+	}
+	
+	public void aumentarQtdCheckins(){
+		this.qtdCheckins++;
 	}
 
 	public String getHorarioFuncionamento() {
@@ -288,6 +302,14 @@ public class Estabelecimento implements Serializable {
 		this.urlLogo = urlLogo;
 	}
 
+	public float getMediaAvaliacoes() {
+		return mediaAvaliacoes;
+	}
+	
+	public void setMediaAvaliacoes(float mediaAvaliacoes){
+		this.mediaAvaliacoes = mediaAvaliacoes;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

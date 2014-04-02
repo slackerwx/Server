@@ -177,4 +177,50 @@ public class AbstractCRUD<T> {
 		}
 		return list;
 	}
+
+	protected List<T> findWithPagination(String namedQuery, int pageNum) {
+		List<T> list = null;
+		try {
+			classeBO.beginTransaction();
+			list = classeDAO.selectWithPagination(namedQuery, pageNum);
+			classeBO.commit();
+
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
+		} catch (BOException e) {
+			try {
+				classeBO.rollback();
+
+				logger.error("Nao foi possivel selecionar: " + namedQuery);
+			} catch (BOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	protected List<T> findByParameterWithPagination(String namedQuery, Object object, int pageNum) {
+		List<T> list = null;
+		try {
+			classeBO.beginTransaction();
+			list = classeDAO.selectByParameterWithPagination(namedQuery, object, pageNum);
+			classeBO.commit();
+			
+			logger.info(classeBO.getClass().getSimpleName() + namedQuery);
+		} catch (BOException e) {
+			try {
+				classeBO.rollback();
+				
+				logger.error("Nao foi possivel selecionar: " + namedQuery);
+			} catch (BOException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		} catch (DAOException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 }

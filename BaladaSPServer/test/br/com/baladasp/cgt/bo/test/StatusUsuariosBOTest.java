@@ -7,7 +7,9 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import br.com.baladasp.cdp.usuario.StatusUsuario;
+import br.com.baladasp.cdp.usuario.Usuario;
 import br.com.baladasp.cgt.bo.StatusUsuariosBO;
+import br.com.baladasp.cgt.bo.UsuarioBO;
 
 public class StatusUsuariosBOTest extends TestCase implements BOTest {
 
@@ -18,8 +20,11 @@ public class StatusUsuariosBOTest extends TestCase implements BOTest {
 		super.setUp();
 
 		statusUsuariosBO = new StatusUsuariosBO();
+		
+		UsuarioBO usuarioBO = new UsuarioBO();
+		Usuario usuario = usuarioBO.consultarUsuarioID(0);
 
-		statusUsuario = new StatusUsuario(1, "UsuarioTest", "20/02/14 02:56", "", "#appbaladasp Teste");
+		statusUsuario = new StatusUsuario("20/02/14 02:56", "PicNic", "http://", "test",usuario);
 		
 	}
 
@@ -41,7 +46,8 @@ public class StatusUsuariosBOTest extends TestCase implements BOTest {
 
 	@Test
 	public void testConsultaStatusTimeline() {
-		ArrayList<StatusUsuario> statusUsuarios = statusUsuariosBO.consultaStatusTimeline();
+		int pageNum = 0;
+		ArrayList<StatusUsuario> statusUsuarios = statusUsuariosBO.consultaStatusTimeline(pageNum);
 
 		assertNotNull(statusUsuarios);
 		assertTrue(statusUsuarios.size() > 0);

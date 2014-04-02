@@ -32,4 +32,11 @@ public class AtividadesUsuarioBO extends AbstractCRUD {
 
 		return (ArrayList<AtividadeUsuario>) findByParameterWithMaxResults(namedQuery, usuario);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<AtividadeUsuario> consultarAtividadesPaginacao(Usuario usuario, int pageNum){
+		String namedQuery = "AtividadeUsuario.findByUsuario";
+		
+		return (ArrayList<AtividadeUsuario>) findByParameterWithPagination(namedQuery, usuario, pageNum);
+	}
 }

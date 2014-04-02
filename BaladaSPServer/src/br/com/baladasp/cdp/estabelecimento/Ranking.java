@@ -30,7 +30,7 @@ public class Ranking {
 
 	@OneToOne
 	@Expose private Categoria categoria;
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL)
 	@Expose private Estabelecimento estabelecimento;
 
 	public Ranking() {
@@ -50,7 +50,7 @@ public class Ranking {
 		this.pontos = pontos;
 	}
 
-	//JSON
+	// JSON
 	public Ranking(long id, long pontos, Categoria categoria, float mediaAvaliacoes) {
 		this.id = id;
 		this.pontos = pontos;
@@ -100,6 +100,7 @@ public class Ranking {
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+		estabelecimento.setMediaAvaliacoes(mediaAvaliacoes);
 	}
 
 	@Override
@@ -132,7 +133,8 @@ public class Ranking {
 
 	@Override
 	public String toString() {
-		return "Ranking [id=" + id + ", pontos=" + pontos + "mediaAvaliacoes=" + mediaAvaliacoes + "]";
+		return "Ranking [id=" + id + ", pontos=" + pontos + ", mediaAvaliacoes=" + mediaAvaliacoes + ", categoria="
+				+ categoria + ", estabelecimento=" + estabelecimento + "]";
 	}
 
 }

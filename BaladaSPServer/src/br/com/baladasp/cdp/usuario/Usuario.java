@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.google.gson.annotations.Expose;
+
 import br.com.baladasp.cdp.constantes.EnumCategoriasTopDez;
 import br.com.baladasp.cdp.estabelecimento.Categoria;
 
@@ -23,15 +25,15 @@ public class Usuario implements Serializable {
 
 
 	@Id
-	private long IDTwitter;
-	private String screenName;
-	private String urlImagem;
-	private String usuario;
+	@Expose private long IDTwitter;
+	@Expose private String screenName;
+	@Expose private String urlImagem;
+	@Expose private String usuario;
 
-	private int qtdCheckins;
-	private int bares;
-	private int baladas;
-	private int restaurantes;
+	@Expose private int qtdCheckins;
+	@Expose private int bares;
+	@Expose private int baladas;
+	@Expose private int restaurantes;
 
 	public Usuario() {
 

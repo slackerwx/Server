@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.NamedQueries;
@@ -27,100 +28,81 @@ public class StatusUsuario implements Serializable {
 	@Column(name = "id")
 	@Expose private long id;
 
-	//TODO adicionar usuario aqui
-	@Expose private long idtwitter;
-	@Expose private String screenName;
 	@Expose private String createdAt;
-	@Expose private String profileImageURL;
-	@Expose private String text;
+	@Expose private String nomeEstabelecimento;
+	@Expose private String linkImagem;
+	@Expose private String mediaURL;
+
+	@OneToOne(optional=false)
+	@Expose
+	private Usuario usuario;
 
 	public StatusUsuario() {
 
 	}
 
-	public StatusUsuario(long userID, String screenName, String date, String profileImageURL, String text) {
+	public StatusUsuario(String date, String nomeEstabelecimento, String linkImagem, String mediaURL, Usuario usuario) {
 		super();
-		this.idtwitter = userID;
-		this.screenName = screenName;
 		this.createdAt = date;
-		this.profileImageURL = profileImageURL;
-		this.text = text;
+		this.nomeEstabelecimento = nomeEstabelecimento;
+		this.linkImagem = linkImagem;
+		this.mediaURL = mediaURL;
+		this.usuario = usuario;
 	}
 
-	public long getUserID() {
-		return idtwitter;
+
+	public long getId() {
+		return id;
 	}
 
-	public void setUserID(long userID) {
-		this.idtwitter = userID;
-	}
-
-	public void setScreenName(String screenName) {
-		this.screenName = screenName;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
 
-	public void setProfileImageURL(String profileImageURL) {
-		this.profileImageURL = profileImageURL;
-	}
-
 	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getScreenName() {
-		return this.screenName;
+		this.nomeEstabelecimento = text;
 	}
 
 	public String getCreatedAt() {
 		return this.createdAt;
 	}
 
-	public String getProfileImageURL() {
+	public String getNomeEstabelecimento() {
 
-		return this.profileImageURL;
+		return this.nomeEstabelecimento;
 	}
 
-	public String getText() {
+	public String getMediaURL() {
+		return mediaURL;
+	}
 
-		return this.text;
+	public void setMediaURL(String mediaURL) {
+		this.mediaURL = mediaURL;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	public String getLinkImagem() {
+		return linkImagem;
+	}
+
+	public void setLinkImagem(String linkImagem) {
+		this.linkImagem = linkImagem;
 	}
 
 	@Override
 	public String toString() {
-		return "StatusUsuarios [userID=" + idtwitter + ", screenName=" + screenName + ", createdAt=" + createdAt
-				+ ", profileImageURL=" + profileImageURL + ", text=" + text + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((screenName == null) ? 0 : screenName.hashCode());
-		result = prime * result + (int) (idtwitter ^ (idtwitter >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		StatusUsuario other = (StatusUsuario) obj;
-		if (screenName == null) {
-			if (other.screenName != null)
-				return false;
-		} else if (!screenName.equals(other.screenName))
-			return false;
-		if (idtwitter != other.idtwitter)
-			return false;
-		return true;
+		return "StatusUsuario [id=" + id + ", createdAt=" + createdAt + ", text=" + nomeEstabelecimento + ", usuario=" + usuario + "]";
 	}
 
 }

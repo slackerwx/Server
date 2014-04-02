@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd ">
+ 
+	<aop:aspectj-autoproxy />
+	
+	<bean id="tratarUsuario" class="br.com.baladasp.cgt.service.usuario.TratarUsuarioImpl" />
+	<bean id="statusUsuariosBO" class="br.com.baladasp.cgt.bo.StatusUsuariosBO"/>
+	<bean id="atividadesUsuarioBO" class="br.com.baladasp.cgt.bo.AtividadesUsuarioBO"/>
+ 
+	<!-- Aspect -->
+	<bean class="br.com.baladasp.aspect.LoggingAspect" />
+
+</beans>

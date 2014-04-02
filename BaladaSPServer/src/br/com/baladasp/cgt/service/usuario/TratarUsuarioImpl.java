@@ -1,7 +1,10 @@
-package br.com.baladasp.cgt.usuario;
+package br.com.baladasp.cgt.service.usuario;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import br.com.baladasp.cdp.estabelecimento.Estabelecimento;
 import br.com.baladasp.cdp.estabelecimento.Ranking;
@@ -16,20 +19,19 @@ import br.com.baladasp.cgt.bo.AtividadesUsuarioBO;
 import br.com.baladasp.cgt.bo.RankingBO;
 import br.com.baladasp.cgt.bo.StatusUsuariosBO;
 import br.com.baladasp.cgt.bo.UsuarioBO;
+import br.com.baladasp.cgt.util.json.serializer.AtividadesUsuarioSerializer;
 import br.com.baladasp.cgt.util.json.serializer.EstabelecimentosSerializer;
 import br.com.baladasp.cgt.util.json.serializer.StatusUsuariosSerializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-//import br.com.baladasp.cgt.util.UsuarioSerializer;
-
 /*
  * jsonString[0] = Tipo de objeto
  * jsonString[1] = Tipo de operacao
  * jsonString[2] = Objeto
  */
-public class TratarUsuario {
+public class TratarUsuarioImpl implements TratarUsuario {
 
 	private Gson gsonEstabelecimentosSerializer = new GsonBuilder()
 			.registerTypeAdapter(ArrayList.class, new EstabelecimentosSerializer())
@@ -39,47 +41,62 @@ public class TratarUsuario {
 			.registerTypeAdapter(ArrayList.class, new StatusUsuariosSerializer())
 			.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
-	public Object operacoes(String[] receivedJsonString) {
-		final String operacao = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[1], String.class);
+	private static Gson gsonAtividadesUsuarioSerializer = new GsonBuilder()
+			.registerTypeAdapter(ArrayList.class, new AtividadesUsuarioSerializer())
+			.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
 
-		if (operacao.equalsIgnoreCase(ConstantesUsuario.VERIFICACAO)) {
-			System.out.println(ConstantesUsuario.VERIFICACAO);
+	private Gson gsonUtils = new Gson();
+
+	private ApplicationContext app;
+
+	@Override
+	public String operacoes(String[] receivedJsonString) {
+		final UsuarioServiceEnum operacao = (UsuarioServiceEnum) gsonEstabelecimentosSerializer.fromJson(
+				receivedJsonString[1], UsuarioServiceEnum.class);
+
+		app = new ClassPathXmlApplicationContext("resource/applicationContext.xml");
+
+		System.out.println(operacao);
+
+		switch (operacao) {
+		case VERIFICAR_CHECKIN_AVALIACAO:
 			return TratarConsultaAvaliacaoCheckin.verificarSeUsuarioJaAvaliouEstabelecimento(
 					gsonEstabelecimentosSerializer, receivedJsonString);
-		}
-
-		if (operacao.equalsIgnoreCase(ConstantesUsuario.CHECKIN)) {
-			System.out.println(ConstantesUsuario.CHECKIN);
+		case CHECKIN_ESTABELECIMENTO:
 			return tratarCheckin(receivedJsonString);
-		}
-
-		if (operacao.equalsIgnoreCase(ConstantesUsuario.AVALIACAO)) {
-			System.out.println(ConstantesUsuario.AVALIACAO);
+		case AVALIAR_ESTABELECIMENTO:
 			return tratarAvaliacao(receivedJsonString);
-		}
-
-		if (operacao.equalsIgnoreCase(ConstantesUsuario.PERFIL)) {
-			System.out.println(ConstantesUsuario.PERFIL);
+		case PERFIL_USUARIO:
 			return tratarPerfil(receivedJsonString);
+		case TIMELINE_TWITTER:
+			return tratarListStatus(receivedJsonString);
+		case ATIVIDADES_USUARIO:
+			return tratarAtividadesUsuario(receivedJsonString);
+		default:
+			break;
 		}
 
-		if (operacao.equalsIgnoreCase(ConstantesUsuario.LIST_STATUS)) {
-			System.out.println(ConstantesUsuario.LIST_STATUS);
-			return tratarListStatus(receivedJsonString);
-		}
 		return null;
 	}
 
-	private Object tratarListStatus(String[] receivedJsonString) {
-		StatusUsuariosBO statusBO = new StatusUsuariosBO();
+	@Override
+	public String tratarListStatus(String[] receivedJsonString) {
+		int pageNum = gsonUtils.fromJson(receivedJsonString[2], Integer.class);
 
-		ArrayList<StatusUsuario> listStatus = statusBO.consultaStatusTimeline();
+		StatusUsuariosBO statusBO = (StatusUsuariosBO) app.getBean("statusUsuariosBO");
+
+		System.out.println("PAGE " + pageNum);
+
+		ArrayList<StatusUsuario> listStatus = statusBO.consultaStatusTimeline(pageNum);
 
 		return gsonStatusUsuarioSerializer.toJson(listStatus);
 	}
 
-	private Object tratarPerfil(String[] receivedJsonString) {
-		Usuario usuario = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2], Usuario.class);
+	@Override
+	public String tratarPerfil(String[] receivedJsonString) {
+		Usuario usuario = gsonStatusUsuarioSerializer.fromJson(receivedJsonString[2], Usuario.class);
+
+		System.out.println("Perfil usuario antes: " + usuario);
 
 		UsuarioBO usuarioBO = new UsuarioBO();
 		Usuario user = usuarioBO.consultarUsuarioIDTwitter(usuario.getIDTwitter());
@@ -91,21 +108,25 @@ public class TratarUsuario {
 			usuario = user;
 		}
 
+		System.out.println("Perfil usuario: " + usuario);
+
 		return usuario == null ? null : gsonStatusUsuarioSerializer.toJson(usuario);
 	}
 
-	private String tratarCheckin(String[] receivedJsonString) {
+	@Override
+	public String tratarCheckin(String[] receivedJsonString) {
 		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2],
 				AtividadeUsuario.class);
 
+		System.out.println("tratarCheckin: " + atividade);
 		AtividadesUsuarioBO atividadesUsuarioBO = new AtividadesUsuarioBO();
 		atividadesUsuarioBO.salvarAtividade(atividade);
 
 		return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_OK_CHECKIN);
 	}
 
-	// TODO Urgente, preciso dar um jeito de cascatear alteracoes em Ranking
-	private Object tratarAvaliacao(String[] receivedJsonString) {
+	@Override
+	public String tratarAvaliacao(String[] receivedJsonString) {
 		AtividadeUsuario atividade = gsonEstabelecimentosSerializer.fromJson(receivedJsonString[2],
 				AtividadeUsuario.class);
 
@@ -127,17 +148,39 @@ public class TratarUsuario {
 				final float novaPontuacao = pontuacaoRankingAtual + avaliacao.getTotaldePontos();
 				ranking.setPontos(novaPontuacao);
 
+				estabelecimento.setMediaAvaliacoes(novaMediaRanking);
 				ranking.setEstabelecimento(estabelecimento);
 			} else {
+				estabelecimento.setMediaAvaliacoes(avaliacao.getMediaAvaliacao());
 				ranking = new Ranking(estabelecimento, avaliacao.getMediaAvaliacao(), avaliacao.getTotaldePontos());
 			}
 			AtividadesUsuarioBO atividadesUsuarioBO = new AtividadesUsuarioBO();
+
+			// Usar AspectJ pra esse tipo de coisa.
+			System.out.println(atividade);
 			atividadesUsuarioBO.salvarAtividade(atividade);
+
+			rankingBO.salvarRanking(ranking);
 
 			return gsonStatusUsuarioSerializer.toJson(ConstantesUsuario.MSG_OK_AVALIADO);
 		}
 
 		return null;
+	}
+
+	@Override
+	public String tratarAtividadesUsuario(String[] receivedJsonString) {
+		Usuario usuario = gsonStatusUsuarioSerializer.fromJson(receivedJsonString[2], Usuario.class);
+		int pageNum = gsonUtils.fromJson(receivedJsonString[3], Integer.class);
+
+		AtividadesUsuarioBO atividadesUsuarioBO = (AtividadesUsuarioBO) app.getBean("atividadesUsuarioBO");
+
+		System.out.println("PAGE " + pageNum);
+
+		ArrayList<AtividadeUsuario> atividadesUsuario = atividadesUsuarioBO.consultarAtividadesPaginacao(usuario,
+				pageNum);
+
+		return gsonAtividadesUsuarioSerializer.toJson(atividadesUsuario);
 	}
 
 	private float calculaMediaRanking(Avaliacao avaliacao, Ranking ranking) {
@@ -207,7 +250,7 @@ public class TratarUsuario {
 			System.out.println("DIA: " + difDia + " MES: " + difMes + " ANO: " + difAno + " HORA: " + difHora);
 
 			/*
-			 * Se nao tiver pelo menos 12 horas de diferença
+			 * Se nao tiver pelo menos 12 horas de diferenÔøΩa
 			 */
 			if ((difDia == 0 && difMes == 0 && difAno == 0) || (difDia == 0 && (Math.abs(difHora) < 12))
 					|| (difDia == 1 && difHora > 11)) {
@@ -217,4 +260,5 @@ public class TratarUsuario {
 			return false;
 		}
 	}
+
 }

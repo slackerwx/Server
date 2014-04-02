@@ -23,4 +23,10 @@ public class Utils {
 			return null;
 		}
 	}
+
+	
+	public static String formatarData(Date createdAt) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
+		return sdf.format(createdAt);
+	}
 }

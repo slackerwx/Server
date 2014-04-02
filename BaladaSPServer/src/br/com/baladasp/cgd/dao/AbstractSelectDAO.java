@@ -37,13 +37,23 @@ public class AbstractSelectDAO<T> extends BaseDAO<T> {
 		Session session = getSession();
 		int pageSize = 10;
 
-		return (ArrayList<T>) session.getNamedQuery(namedQuery).setParameter("parametro", object).setMaxResults(pageSize).list();
+		return (ArrayList<T>) session.getNamedQuery(namedQuery).setParameter("parametro", object)
+				.setMaxResults(pageSize).list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<T> selectByParameterWithPagination(String namedQuery, Object object, int pageNum) throws DAOException {
+	public ArrayList<T> selectWithPagination(String namedQuery, int pageNum) throws DAOException {
 		Session session = getSession();
+		int pageSize = 10;
 
+		return (ArrayList<T>) session.getNamedQuery(namedQuery).setFirstResult(pageNum * pageSize)
+				.setMaxResults(pageSize).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public ArrayList<T> selectByParameterWithPagination(String namedQuery, Object object, int pageNum)
+			throws DAOException {
+		Session session = getSession();
 		int pageSize = 10;
 
 		return (ArrayList<T>) session.getNamedQuery(namedQuery).setParameter("parametro", object)

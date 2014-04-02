@@ -34,11 +34,18 @@ public class AvaliacaoBO extends AbstractCRUD {
 		return (ArrayList<Avaliacao>) findByParameterWithMaxResults(namedQuery, usuario);
 	}
 
+//	@SuppressWarnings("unchecked")
+//	public ArrayList<Avaliacao> consultarAvaliacoesEstabelecimento(Estabelecimento estabelecimento) {
+//		String namedQuery = "Avaliacao.findByEstabelecimento";
+//
+//		return (ArrayList<Avaliacao>) findByParameterReturnList(namedQuery, estabelecimento);
+//	}
+	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Avaliacao> consultarAvaliacoesEstabelecimento(Estabelecimento estabelecimento) {
+	public ArrayList<Avaliacao> consultarAvaliacoesEstabelecimento(Estabelecimento estabelecimento, int pageNum) {
 		String namedQuery = "Avaliacao.findByEstabelecimento";
-
-		return (ArrayList<Avaliacao>) findByParameterReturnList(namedQuery, estabelecimento);
+		
+		return (ArrayList<Avaliacao>) findByParameterWithPagination(namedQuery, estabelecimento, pageNum);
 	}
 
 }

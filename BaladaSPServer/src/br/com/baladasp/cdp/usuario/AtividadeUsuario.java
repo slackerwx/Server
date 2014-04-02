@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
-
 import com.google.gson.annotations.Expose;
 
 @NamedQueries({ @NamedQuery(name = "AtividadeUsuario.findByUsuario", query = "FROM AtividadeUsuario AS a WHERE a.usuario = :parametro order by cod_atividade DESC") })
@@ -31,11 +30,11 @@ public class AtividadeUsuario implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(name = "cod_atividade")
-	private long id;
+	@Expose private long id;
 
 	@Expose private String tipoAtividade;
 	@Temporal(TemporalType.TIMESTAMP)
-	@Expose private Calendar dataAtividade =  Calendar.getInstance();
+	@Expose private Calendar dataAtividade = Calendar.getInstance();
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@Expose private Usuario usuario;
@@ -59,7 +58,12 @@ public class AtividadeUsuario implements Serializable {
 	public AtividadeUsuario(Usuario usuarioTwitter, Avaliacao avaliacao) {
 		this.usuario = usuarioTwitter;
 		this.avaliacao = avaliacao;
+		avaliacao.setUsuario(usuarioTwitter);
 		this.tipoAtividade = "Avaliacao";
+	}
+
+	public long getId() {
+		return id;
 	}
 
 	public Usuario getUsuario() {
@@ -105,15 +109,15 @@ public class AtividadeUsuario implements Serializable {
 		this.avaliacao = avaliacao;
 	}
 
-	@Override
-	public String toString() {
-		return "AtividadeUsuario [id=" + id + ", tipoAtividade=" + tipoAtividade + ", dataAtividade=" + dataAtividade + ", checkin=" + checkin
-				+ "]";
-	}
-
 	public void checkinUsuario() {
 		OperacaoAtividadeUsuario op = getTipoAtividade();
 		usuario.checkinUsuario(op.getEstabelecimento().getCategoria());
+	}
+
+	@Override
+	public String toString() {
+		return "AtividadeUsuario [id=" + id + ", tipoAtividade=" + tipoAtividade + ", usuario=" + usuario
+				+ ", checkin=" + checkin + ", avaliacao=" + avaliacao + "]";
 	}
 
 }

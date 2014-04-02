@@ -17,10 +17,10 @@ public class StatusUsuariosBO extends AbstractCRUD {
 		save(statusUsuario);
 	}
 
-	public ArrayList<StatusUsuario> consultaStatusTimeline() {
+	public ArrayList<StatusUsuario> consultaStatusTimeline(int pageNum) {
 		String namedQuery = "StatusUsuarios.getAll";
 
-		return (ArrayList<StatusUsuario>) findAll(namedQuery);
+		return (ArrayList<StatusUsuario>) findWithPagination(namedQuery, pageNum);
 	}
 
 	public void excluirStatus(StatusUsuario statusUsuario) {
