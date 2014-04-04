@@ -30,6 +30,7 @@ public class Usuario implements Serializable {
 	@Expose private String urlImagem;
 	@Expose private String usuario;
 
+	@Expose private int qtdAvaliacoes;
 	@Expose private int qtdCheckins;
 	@Expose private int bares;
 	@Expose private int baladas;
@@ -80,6 +81,18 @@ public class Usuario implements Serializable {
 	}
 
 	public void checkinUsuario(Categoria categoria) {
+		categoriaAtividade(categoria);
+
+		this.qtdCheckins += 1;
+	}
+	
+	public void avaliacaoUsuario(Categoria categoria){
+		categoriaAtividade(categoria);
+		
+		this.qtdAvaliacoes +=1;
+	}
+
+	private void categoriaAtividade(Categoria categoria) {
 		if (categoria.getCategoria().equalsIgnoreCase(EnumCategoriasTopDez.BARES.toString())) {
 			this.bares += 1;
 		} else if (categoria.getCategoria().equalsIgnoreCase(EnumCategoriasTopDez.BALADAS.toString())) {
@@ -87,8 +100,6 @@ public class Usuario implements Serializable {
 		} else if (categoria.getCategoria().equalsIgnoreCase(EnumCategoriasTopDez.RESTAURANTES.toString())) {
 			this.restaurantes += 1;
 		}
-
-		this.qtdCheckins += 1;
 	}
 
 	@Override
